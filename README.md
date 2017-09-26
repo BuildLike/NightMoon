@@ -1,3 +1,5 @@
+﻿![NightMoon](https://github.com/NightMoonTeam/NightMoon/master/logo.jpg)</br>
+
 # NightMoon
 __A server software for PMMP__<br>
 <br>
