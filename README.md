@@ -1,4 +1,4 @@
-﻿![NightMoon](https://github.com/NightMoonTeam/NightMoon/master/logo.jpg)</br>
+﻿![NightMoon](https://github.com/NightMoonTeam/NightMoon/blob/master/logo.jpg)</br>
 
 # NightMoon
 __A server software for PMMP__<br>
