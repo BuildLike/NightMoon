@@ -3,7 +3,7 @@
 # NightMoon
 __A server software for PMMP__<br>
 <br>
-NightMoon is a server software based on <a href="https://github.com/pmmp/PocketMine-MP" target="_blank">PocketMine-MP</a>.<br>
+NightMoon is a server software based on <a href="https://github.com/pmmp/PocketMine-MP" target="_blank">PocketMine-MP</a> and <a href="https://github.com/Apollo-SoftwareTeam/Apollo-Legacy" target="_blank">Apollo</a>.<br>
 Part of the code was written by **iTXTech**, **ApolloPE-Team**, **PrismarineTeam** and **BlueLightJapan**.<br>
 This software has implemented DevTools(written by iTXTech).
 <br>
