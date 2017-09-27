@@ -8,6 +8,6 @@ Part of the code was written by **iTXTech**, **ApolloPE-Team**, **PrismarineTeam
 This software has implemented DevTools(written by iTXTech).
 <br>
 <br>
-NightMoonはPocketMine-MPを基に作られたPMMPサーバーソフトウェアです<br>
+NightMoonは<a href="https://github.com/pmmp/PocketMine-MP" target="_blank">PocketMine-MP</a>と<a href="https://github.com/Apollo-SoftwareTeam/Apollo-Legacy" target="_blank">Apollo</a>を基に作られたPMMPサーバーソフトウェアです<br>
 一部のコードは**iTXTeam**, **ApolloPE-Team**, **PrismarineTeam**, **BlueLightJapan**によって書かれています<br>
 このソフトウェアはDevToolsを実装しています
