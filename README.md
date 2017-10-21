@@ -2,7 +2,7 @@
 
 # NightMoon
 __A server software for PMMP__<br>
-<br>
+※準備中です<br>
 NightMoon is a server software based on <a href="https://github.com/pmmp/PocketMine-MP" target="_blank">PocketMine-MP</a> and <a href="https://github.com/iTXTech/Genisys" target="_blank">Genisys</a>.<br>
 This software has implemented DevTools(written by iTXTech).
 <br>
