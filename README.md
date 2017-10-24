@@ -1,13 +1,15 @@
 ﻿![NightMoon](https://github.com/NightMoonTeam/NightMoon/blob/master/logo.jpg)</br>
 
-# NightMoon
+NightMoon
+====================
 __A server software for PMMP__<br>
-※準備中です<br>
+
+# English
 NightMoon is a server software based on <a href="https://github.com/pmmp/PocketMine-MP" target="_blank">PocketMine-MP</a> and <a href="https://github.com/iTXTech/Genisys" target="_blank">Genisys</a>.<br>
 This software has implemented DevTools(written by iTXTech).
 
-## Known Bugs in 1.2:
-
+Known Bugs
+-------------
 - Movement Bug
 - Death Bug
 <br>
