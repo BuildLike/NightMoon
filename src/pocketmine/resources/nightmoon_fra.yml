@@ -1,0 +1,136 @@
+#
+#  __    _         _         __   __
+# |  \  | |_      | |    _  |  \_/  |
+# |   \ | (_) ___ | |__ | |_|       | ___   ___  ____
+# | |\ \| | |/ _ \|  _ \| __| |\_/| |/ _ \ / _ \|  _ \
+# | | \   | | (_| | / \ | |_| |   | | (_) | (_) | | | |
+# |_|  \__|_|\__  |_| |_|\__|_|   |_|\___/ \___/|_| |_|
+#             __| |
+#            |___/
+#
+#
+#
+#Fichier de configuration avance de NightMoon
+
+#Version de ce fichier
+config:
+ version: 28
+
+level:
+ #Reglez si la meteo est activee (la pluie peut provoquer un retard sur les peripheriques plus anciens)
+ weather: true
+ #Temps de duree aleatoire
+ weather-random-duration-min: 6000
+ weather-random-duration-max: 12000
+ #Intervalle d'eclairement aleatoire, par defaut 10s, 0 = desactiver
+ lightning-time: 200
+ #Reglez si les eclairs mettent le feu dans les biomes apres
+ lightning-fire: false
+ #Reglez si le feu doit se propager (arbres, etc.)
+ fire-spread: false
+
+player:
+ #Reglez si la faim est activee
+ hunger: true
+ #Choisissez si l'experience est activee
+ experience: true
+ #Choisissez de garder l'inventaire d'un joueur apres sa mort
+ keep-inventory: false
+ #Effacez l'inventaire d'un joueur en changeant leur gamemode
+ auto-clear-inventory : true
+ #Choisissez de garder l'experience
+ keep-experience: false
+
+developer:
+  #Ce parametre permet au serveur de charger des plugins via le repertoire source via un fichier .phar
+  #Recommande qu'il reste "faux"
+  folder-plugin-loader: true
+  #Ce parametre permet au serveur de charger des plugins avec une API incompatible
+  #Recommande qu'il reste "faux"
+  load-incompatible-api: true
+
+nether:
+ #Choisissez si le nether est autorise, le niveau de Nether generera automatiquement
+ allow-nether: false
+ #Recommande qu'il reste "nether"
+ level-name: "nether"
+
+ender:
+ allow-ender: false
+ level-name: "ender"
+
+server:
+ #Choisissez si le golem de genie est autorise
+ allow-iron-golem: false
+ #Choisissez si le vent de neige qui frappe est autorise
+ allow-snow-golem: false
+ #Choisissez si server.log est active/desactive
+ disable-log: false
+ #Choisissez comment appeler les joueurs lorsque qu'ils rejoignent la partie
+ #0 = Message, 1 = Pointe, 2 = Apparaitre
+ player-msg-type: 0
+ login-msg: "§3@player rejoint la partie"
+ logout-msg: "§3@player quitte la partie"
+ #Definir si la creation limitee est activee (ne peut pas supprimer les elements de la barre hotbar, ne pas ouvrir les coffres, etc.)
+ limited-creative: false
+ #Definir si ajouter DestroyBlockParticle
+ destroy-block-particle: true
+ #Reglez si les potions d'eclaboussures sont activees
+ allow-splash-potion: true
+ # Reglez si les commande de selection sont activees
+ advanced-command-selector: false
+ #Definir si il faut activer ResourcePackManager
+ enable-resource: false
+ #This parameter turns on or off the absorption of water by a sponge //TODO: Translation for other languages
+ absorb-water: false
+
+enchantment:
+ #Choisissez si les anvil sont activees
+ enable-anvil: true
+ #Choisissez si les tables d'enchantement sont activees
+ enable-enchanting-table: true
+ #Choisissez de compter les etageres (peut causer un retard de serveur)
+ #Si cette option est fausse, le serveur utilisera un compte aleatoire (0 a 15)
+ count-bookshelf: false
+
+redstone:
+ ##########################################################
+ #     Choisissez si le systeme redstone est active       #
+ ##########################################################
+ # Si c'est faux, le systeme Redstone ne fonctionnera pas #
+ ##########################################################
+ enable: false
+ #Choisissez si les impulsions de frequence sont activees
+ frequency-pulse: false
+ #Si il et active, reglez la frequence des impulsions. Par defaut = 1s
+ pulse-frequency: 1
+
+dserver:
+ #Le nombre de tous les serveurs multi-serveurs unifies
+ enable: false
+ #Mettre a jour automatiquement la requete
+ query-auto-update: false
+ #Mettre a jour periodiquement la requete
+ query-tick-update: true
+ #Le maximum de joueurs sur le MOTD
+ motd-max-players: 0
+ #Les joueurs maximum sur la requete. 0 = par defaut
+ query-max-players: 0
+ #Afficher le nombre de tous les joueurs sur MOTD
+ motd-all-players: false
+ #Afficher le nombre de tous les joueurs sur la requete
+ query-all-players: false
+ #Afficher le nombre de joueurs en ligne sur MOTD
+ motd-players: false
+ #Afficher le nombre de joueurs en ligne sur la requete
+ query-players: false
+ #Frequence de mise a jour. 20 = 1s
+ time: 40
+ #Reessayez automatiquement le nombre de fois ou le serveur echoue
+ retry-times: 3
+ #La liste du serveur, separee par ';', par exemple 1.example.com:19132 ;2.example.com:19133
+ server-list: ""
+ 
+ inventory:
+  #Configurez ceci comme vrai si vous avez des problemes avec les enclumes. Cela permettra de traiter les transactions d'inventaire de maniere vanille sans anti-triche ou de verification.
+  allow-cheats: false
