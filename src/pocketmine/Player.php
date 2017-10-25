@@ -313,6 +313,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 	protected $xuid = "";
 	/** @var CustomForm */
 	protected $defaultServerSettings;
+	protected $portalTime = 0;
 
 	private $ping = 0;
 	
@@ -1955,7 +1956,6 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 		$this->timings->startTiming();
 
 		if ($this->spawned) {
-
 			$this->sendAttributes();
 			$this->processMovement($tickDiff);
 			$this->entityBaseTick($tickDiff);
@@ -1971,6 +1971,21 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 			}
 
 			if (!$this->isSpectator() and $this->isAlive()) {
+				if($currentTick % 20 == 0){
+					if($this->isInsideOfPortal()){
+						if($this->portalTime == 1){
+							$to = $this->level->getFolderName() == "nether" ? $this->server->getDefaultLevel()->getFolderName() : "nether";
+							if($targetLevel = $this->server->getLevelByName($to)){
+								$this->teleport($targetLevel->getSafeSpawn());
+							}
+						}else{
+							$this->portalTime++;
+						}
+					}else{
+						$this->portalTime = 0;
+					}
+				}
+				
 				$this->checkNearEntities();
 				if ($this->hasEffect(Effect::LEVITATION)) {
 					$this->inAirTicks = 0;

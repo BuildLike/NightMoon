@@ -23,7 +23,7 @@ namespace pocketmine\tile;
 
 use pocketmine\level\Level;
 use pocketmine\nbt\NBT;
-use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\{CompoundTag, IntTag, StringTag};
 use pocketmine\network\mcpe\protocol\BlockEntityDataPacket;
 use pocketmine\Player;
 
@@ -86,7 +86,16 @@ abstract class Spawnable extends Tile {
 	/**
 	 * @return CompoundTag
 	 */
-	public abstract function getSpawnCompound();
+	public function getSpawnCompound(){
+		$nbt = new CompoundTag("", [
+			$this->namedtag->id,
+			$this->namedtag->x,
+			$this->namedtag->y,
+			$this->namedtag->z
+		]);
+		$this->addAdditionalSpawnData($nbt);
+		return $nbt;
+	}
 
 	/**
 	 * Called when a player updates a block entity's NBT data
@@ -100,4 +109,8 @@ abstract class Spawnable extends Tile {
 	public function updateCompoundTag(CompoundTag $nbt, Player $player) : bool{
 		return false;
 	}
-}
+
+	public function addAdditionalSpawnData(CompoundTag $nbt){
+		
+	}
+} 
