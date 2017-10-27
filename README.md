@@ -14,7 +14,7 @@ This software has implemented DevTools.
 Known Bugs
 -------------
 - Movement Bug
-- Death Bug
+- Command Bug (banipbyname,bancidbyname)
 
 # 日本語
 NightMoonは<a href="https://github.com/pmmp/PocketMine-MP" target="_blank">PocketMine-MP</a>、<a href="https://github.com/iTXTech/Genisys" target="_blank">Genisys</a>、<a href="https://github.com/TuranicTeam/Turanic" target="_blank">Turanic</a>を基に作られたPMMPサーバーソフトウェアです<br>
@@ -23,4 +23,4 @@ NightMoonは<a href="https://github.com/pmmp/PocketMine-MP" target="_blank">Pock
 バグ
 -------------
 - 移動バグ
-- 死亡バグ
+- コマンドバグ (banipbyname,bancidbyname)
