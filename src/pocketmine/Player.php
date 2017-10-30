@@ -45,6 +45,7 @@ use pocketmine\event\entity\EntityDamageByBlockEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\inventory\InventoryCloseEvent;
+use pocketmine\event\inventory\CraftItemEvent;
 use pocketmine\event\inventory\InventoryPickupArrowEvent;
 use pocketmine\event\inventory\InventoryPickupItemEvent;
 use pocketmine\event\player\cheat\PlayerIllegalMoveEvent;
@@ -60,6 +61,7 @@ use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerEditBookEvent;
 use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerGameModeChangeEvent;
+use pocketmine\event\player\PlayerTransferEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerItemConsumeEvent;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -156,6 +158,7 @@ use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsRequestPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsResponsePacket;
+use pocketmine\network\mcpe\protocol\CraftingEventPacket;
 use pocketmine\item\{WrittenBook,WritableBook};
 use pocketmine\network\SourceInterface;
 use pocketmine\permission\PermissibleBase;
@@ -313,7 +316,10 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 	protected $xuid = "";
 	/** @var CustomForm */
 	protected $defaultServerSettings;
-	protected $portalTime = 0;
+	protected $portalStatus = self::PORTAL_STATUS_OUT;
+	
+	const PORTAL_STATUS_OUT = 0;
+	const PORTAL_STATUS_IN = 1;
 
 	private $ping = 0;
 	
@@ -957,6 +963,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 	 */
 	public function setUsingItem(bool $value){
 		$this->startAction = $value ? $this->server->getTick() : -1;
+		$this->setDataFlag(self::DATA_FLAGS, self::DATA_FLAG_ACTION, $value);
 	}
 
 	public function getItemUseDuration() : int{
@@ -1619,8 +1626,8 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 	 */
 	protected function checkGroundState(float $movX, float $movY, float $movZ, float $dx, float $dy, float $dz){
 		$bb = clone $this->boundingBox;
-		$bb->minY = $this->y - 0.1;
-		$bb->maxY = $this->y + 0.1;
+		$bb->minY = $this->y - 0.2;
+		$bb->maxY = $this->y + 0.2;
 		if(count($this->level->getCollisionBlocks($bb, true)) > 0){
 			$this->onGround = true;
 		}else{
@@ -1971,17 +1978,16 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 
 			if (!$this->isSpectator() and $this->isAlive()) {
 				if($currentTick % 20 == 0){
-					if($this->isInsideOfPortal()){
-						if($this->portalTime == 1){
-							$to = $this->level->getFolderName() == "nether" ? $this->server->getDefaultLevel()->getFolderName() : "nether";
+					if($portalType = $this->isInsideOfPortal()){
+						if($this->portalStatus === self::PORTAL_STATUS_OUT){
+							$to = $this->level->getFolderName() == $portalType ? $this->server->getDefaultLevel()->getFolderName() : $portalType;
 							if($targetLevel = $this->server->getLevelByName($to)){
 								$this->teleport($targetLevel->getSafeSpawn());
 							}
-						}else{
-							$this->portalTime++;
+							$this->portalStatus = self::PORTAL_STATUS_IN;
 						}
 					}else{
-						$this->portalTime = 0;
+						$this->portalStatus = self::PORTAL_STATUS_OUT;
 					}
 				}
 				
@@ -1999,7 +2005,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 						#enable use of elytra. todo: check if it is open
 						$this->inAirTicks = 0;
 					}
-					if (!$this->allowFlight and $this->inAirTicks > 10 and !$this->isSleeping()) {
+					if (!$this->allowFlight and $this->inAirTicks > 10 and !$this->isSleeping() and $this->speed instanceof Vector3) {
 						$expectedVelocity = (-$this->gravity) / $this->drag - ((-$this->gravity) / $this->drag) * exp(-$this->drag * ($this->inAirTicks - $this->startAirTicks));
 						$diff = ($this->speed->y - $expectedVelocity) ** 2;
 
@@ -2325,7 +2331,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 			return false;
 		}
 		$line = substr($cmd, 1);
-		$this->server->getPluginManager()->callEvent($event = new PlayerCommandPreprocessEvent($this, $line));
+		$this->server->getPluginManager()->callEvent($event = new PlayerCommandPreprocessEvent($this, $cmd));
 		if($event->isCancelled()){
 			return false;
 		}
@@ -2493,27 +2499,9 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 		$message = TextFormat::clean($message, $this->removeFormat);
 		foreach(explode("\n", $message) as $messagePart){
 			if(trim($messagePart) !== "" and strlen($messagePart) <= 255 and $this->messageCounter-- > 0){
-				if(strpos($messagePart, './') === 0){
-					$messagePart = substr($messagePart, 1);
-				}
-
-				$ev = new PlayerCommandPreprocessEvent($this, $messagePart);
-
-				$this->server->getPluginManager()->callEvent($ev);
-
-				if($ev->isCancelled()){
-					break;
-				}
-
-				if(strpos($ev->getMessage(), "/") === 0){
-					Timings::$playerCommandTimer->startTiming();
-					$this->server->dispatchCommand($ev->getPlayer(), substr($ev->getMessage(), 1));
-					Timings::$playerCommandTimer->stopTiming();
-				}else{
-					$this->server->getPluginManager()->callEvent($ev = new PlayerChatEvent($this, $ev->getMessage()));
-					if(!$ev->isCancelled()){
-						$this->server->broadcastMessage($this->getServer()->getLanguage()->translateString($ev->getFormat(), [$ev->getPlayer()->getDisplayName(), $ev->getMessage()]), $ev->getRecipients());
-					}
+				$this->server->getPluginManager()->callEvent($ev = new PlayerChatEvent($this, $messagePart));
+				if(!$ev->isCancelled()){
+					$this->server->broadcastMessage($this->getServer()->getLanguage()->translateString($ev->getFormat(), [$ev->getPlayer()->getDisplayName(), $ev->getMessage()]), $ev->getRecipients());
 				}
 			}
 		}
@@ -2607,28 +2595,6 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 			}
 
 			$actions[] = $action;
-		}
-
-		if($packet->isCraftingPart){
-			if($this->craftingTransaction === null){
-				$this->craftingTransaction = new CraftingTransaction($this, $actions);
-			}else{
-				foreach($actions as $action){
-					$this->craftingTransaction->addAction($action);
-				}
-			}
-
-			if($this->craftingTransaction->getPrimaryOutput() !== null){
-				//we get the actions for this in several packets, so we can't execute it until we get the result
-
-				$this->craftingTransaction->execute();
-				$this->craftingTransaction = null;
-			}
-
-			return true;
-		}elseif($this->craftingTransaction !== null){
-			$this->server->getLogger()->debug("Got unexpected normal inventory action with incomplete crafting transaction from " . $this->getName() . ", refusing to execute crafting");
-			$this->craftingTransaction = null;
 		}
 
 		switch($packet->transactionType){
@@ -2914,6 +2880,19 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 		}
 
 		return false; //TODO
+	}
+
+	public function handleCraftingEvent(CraftingEventPacket $packet) : bool{
+		//HACK!
+		//TODO: Scan input and output
+		$recipe = $this->server->getCraftingManager()->getRecipe($packet->id);
+		$this->server->getPluginManager()->callEvent($event = new CraftItemEvent($this, $packet->input, $packet->output, $recipe));
+		if($event->isCancelled()){
+			$this->inventory->sendContents($this);
+			return false;
+		}
+		$this->inventory->addItem(...$event->getOutput());
+		return true;
 	}
 
 	public function handleMobEquipment(MobEquipmentPacket $packet) : bool{
@@ -3586,15 +3565,17 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 		$this->dataPacket($pk);
 	}
 
-	/**
-	 * @param string $address
-	 * @param		$port
-	 */
-	public function transfer(string $address, $port){
-		$pk = new TransferPacket();
-		$pk->address = $address;
-		$pk->port = $port;
-		$this->dataPacket($pk);
+	public function transfer(string $address, int $port){
+		$this->server->getPluginManager()->callEvent($ev = new PlayerTransferEvent($this, $address, $port, "transfer"));
+		if(!$ev->isCancelled()) {
+			$pk = new TransferPacket();
+			$pk->address = $address;
+			$pk->port = $port;
+			$this->directDataPacket($pk);
+
+			return true;
+		}
+		return false;
 	}
 
 	/**

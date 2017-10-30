@@ -163,10 +163,10 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface {
 	}
 
 	/**
-	 * @param string             $identifier
-	 * @param EncapsulatedPacket $packet
-	 * @param int                $flags
-	 */
+	* @param string $identifier
+	* @param EncapsulatedPacket $packet
+	* @param int $flags
+	*/
 	public function handleEncapsulated($identifier, EncapsulatedPacket $packet, $flags){
 		if(isset($this->players[$identifier])){
 			$address = $this->players[$identifier]->getAddress();

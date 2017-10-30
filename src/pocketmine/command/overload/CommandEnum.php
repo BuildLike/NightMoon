@@ -32,10 +32,15 @@ class CommandEnum{
 	
 	protected $name;
 	protected $values = [];
+	protected $type;
 	
-	public function __construct(string $name, array $values = []){
+	const TYPE_ITEM = 1;
+	const TYPE_CUSTOM = 0;
+
+	public function __construct(string $name, array $values = [], int $type = self::TYPE_CUSTOM){
 		$this->name = $name;
 		$this->values = $values;
+		$this->type = $type;
 	}
 	
 	public function getName() : string{
@@ -44,6 +49,10 @@ class CommandEnum{
 	
 	public function getValues() : array{
 		return $this->values;
+	}
+
+	public function getType() : int{
+		return $this->type;
 	}
 }
 ?>
