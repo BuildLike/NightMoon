@@ -14,7 +14,7 @@
 
 #ファイルのバージョン
 config:
- version: 28
+ version: 29
 
 level:
  #有効にすると、天候要素が加わります（雨が降ると古い端末の動作が遅くなる場合があります）
@@ -62,6 +62,8 @@ ender:
  level-name: "ender"
 
 server:
+ #有効にするとプレイヤーサーバー設定でNightMoonカスタムUIの表示を許可します
+ show-nightmoon: false
  #有効にするとアイアンゴーレムのスポーンを許可します
  allow-iron-golem: false
  #有効にするとスノーゴーレムのスポーンを許可します

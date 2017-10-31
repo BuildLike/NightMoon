@@ -323,7 +323,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 
 	private $ping = 0;
 	
-	public function isValidUserName(string $name) : bool{
+	public static function isValidUserName(string $name) : bool{
 		$lname = strtolower($name);
 		$len = strlen($lname);
 		return $lname !== "rcon" && $lname !== "console" && $len >= 1 && $len <= 16 && preg_match("/[^A-Za-z0-9_ ]/", $name) === 0;
@@ -2372,6 +2372,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 
 		$this->uuid = UUID::fromString($packet->clientUUID);
 		$this->rawUUID = $this->uuid->toBinary();
+		$this->xuid = $packet->xuid;
 
 		if(!Player::isValidUserName($packet->username)){
 			$this->close("", "disconnectionScreen.invalidName");
@@ -3373,7 +3374,9 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 	* @return bool
 	*/
 	public function handleServerSettingsRequest(ServerSettingsRequestPacket $packet) : bool{
-		$this->sendServerSettings($this->getDefaultServerSettings());
+		if($this->server->getAdvancedProperty("server.show-nightmoon", false)){
+			$this->sendServerSettings($this->getDefaultServerSettings());
+		}
 		return true;
 	}
 	
@@ -4183,8 +4186,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 	 *
 	 * @return int
 	 */
-	public function getWindowId(Inventory $inventory): int
-	{
+	public function getWindowId(Inventory $inventory): int{
 		if ($this->windows->contains($inventory)) {
 			return $this->windows[$inventory];
 		}
@@ -4308,8 +4310,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 	/**
 	 * @param Chunk $chunk
 	 */
-	public function onChunkChanged(Chunk $chunk)
-	{
+	public function onChunkChanged(Chunk $chunk){
 		if (isset($this->usedChunks[$hash = Level::chunkHash($chunk->getX(), $chunk->getZ())])) {
 			$this->usedChunks[$hash] = false;
 		}
@@ -4321,48 +4322,42 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 	/**
 	 * @param Chunk $chunk
 	 */
-	public function onChunkLoaded(Chunk $chunk)
-	{
+	public function onChunkLoaded(Chunk $chunk){
 
 	}
 
 	/**
 	 * @param Chunk $chunk
 	 */
-	public function onChunkPopulated(Chunk $chunk)
-	{
+	public function onChunkPopulated(Chunk $chunk){
 
 	}
 
 	/**
 	 * @param Chunk $chunk
 	 */
-	public function onChunkUnloaded(Chunk $chunk)
-	{
+	public function onChunkUnloaded(Chunk $chunk){
 
 	}
 
 	/**
 	 * @param Vector3 $block
 	 */
-	public function onBlockChanged(Vector3 $block)
-	{
+	public function onBlockChanged(Vector3 $block){
 
 	}
 
 	/**
 	 * @return int|null
 	 */
-	public function getLoaderId()
-	{
+	public function getLoaderId(){
 		return $this->loaderId;
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function isLoaderActive()
-	{
+	public function isLoaderActive(){
 		return $this->isConnected();
 	}
 
@@ -4475,15 +4470,29 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 		return true;
 	}
 
+	/**
+	 * @param $ping
+	 */
 	public function setPing($ping){
 		$this->ping = $ping;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getPing(){
 		return $this->ping;
 	}
 	
 	public function isTeleporting() : bool{
 		return $this->isTeleporting;
+	}
+
+	/**
+	 * Returns Player name in lower case letter
+	 * @return string
+	 */
+	public function getLowerCaseName() : string{
+		return $this->iusername;
 	}
 }
