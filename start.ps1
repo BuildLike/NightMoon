@@ -16,6 +16,8 @@ if($php -ne ""){
 
 if(Test-Path "PocketMine-MP.phar"){
 	$file = "PocketMine-MP.phar"
+}elseif(Test-Path "NightMoon.phar"){
+	$file = "NightMoon.phar"
 }elseif(Test-Path "src\pocketmine\PocketMine.php"){
 	$file = "src\pocketmine\PocketMine.php"
 }else{
