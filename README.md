@@ -8,7 +8,7 @@ __A server software for PMMP__
 [日本語](#日本語)   
 
 # English
-NightMoon is a server software based on <a href="https://github.com/pmmp/PocketMine-MP" target="_blank">PocketMine-MP</a> ,?<a href="https://github.com/iTXTech/Genisys" target="_blank">Genisys</a> and <a href="https://github.com/TuranicTeam/Turanic" target="_blank">Turanic</a>.<br>
+NightMoon is a server software based on <a href="https://github.com/pmmp/PocketMine-MP" target="_blank">PocketMine-MP</a> ,<a href="https://github.com/iTXTech/Genisys" target="_blank">Genisys</a> and <a href="https://github.com/TuranicTeam/Turanic" target="_blank">Turanic</a>.<br>
 This software has implemented DevTools.
 
 Known Bugs
