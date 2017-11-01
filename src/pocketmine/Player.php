@@ -159,7 +159,7 @@ use pocketmine\network\mcpe\protocol\ServerSettingsRequestPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsResponsePacket;
 use pocketmine\network\mcpe\protocol\CraftingEventPacket;
 use pocketmine\item\{
-    Elytra, WrittenBook, WritableBook
+Elytra, WrittenBook, WritableBook
 };
 use pocketmine\network\SourceInterface;
 use pocketmine\permission\PermissibleBase;
@@ -310,8 +310,8 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 	public $boundingBox;
 	protected $uuid;
 	protected $rawUUID;
-	protected $modalWindowId = 0;
-	protected $modalWindows = [];
+	protected $modalFormcnt = 0;
+	protected $modalForms = [];
 	protected $xuid = "";
 	/** @var CustomForm */
 	protected $defaultServerSettings;
@@ -915,7 +915,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 	}
 
 	/**
-	 * Gets the player IP address
+	 * Returns Players IP address
 	 *
 	 * @return string
 	 */
@@ -3370,8 +3370,33 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 	}
 	
 	public function handleModalFormResponse(ModalFormResponsePacket $packet) : bool{
-		$this->checkModal($packet);
-		return true;
+		$id = $packet->formId;
+		$data = json_decode($packet->formData, true);
+		
+		if(isset($this->modalForms[$id])){
+			if($data === null){
+				$this->modalForms[$id]->close($this);
+				
+				$this->server->getPluginManager()->callEvent($ev = new UICloseEvent($this, $packet));
+				if($ev->isCancelled()){
+					$this->sendForm($this->getForm($id), $id);
+					return false;
+				}
+			}else{
+				$handleData = $this->modalForms[$id]->handle($data, $this);
+				
+			 $this->server->getPluginManager()->callEvent($ev = new UIDataReceiveEvent($this, $packet, $handleData));
+			 if($ev->isCancelled()){
+				 $this->sendForm($this->getForm($id), $id);
+				 return false;
+			 }
+			}
+			
+			unset($this->modalForms[$id]);
+			
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -4380,47 +4405,23 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 		parent::addEffect($effect);
 	}
 	
-	public function sendModalForm(CustomUI $window){
+	public function sendForm(CustomUI $window, int $forceId = -1){
+		if($forceId < 0){
+			$forceId = $this->modalFormCnt++;
+		}
 		$pk = new ModalFormRequestPacket;
-		$pk->formId = $id = $this->modalWindowId++;
+		$pk->formId = $forceId;
 		$pk->formData = json_encode($window->jsonSerialize());
 		$this->dataPacket($pk);
-		$this->modalWindows[$id] = $window;
-	}
-	
-	protected function checkModal(ModalFormResponsePacket $packet){
-		$id = $packet->formId;
-		$data = json_decode($packet->formData, true);
-		if(isset($this->modalWindows[$id])){
-			$cancel = false;
-			if($data === null){
-				$this->server->getPluginManager()->callEvent($ev = new UICloseEvent($this, $packet));
-				if($ev->isCancelled()){
-					$this->sendModalForm($this->getModalForm($id));
-				}
-				$this->modalWindows[$id]->close($this);
-				return;
-			}
-			
-			$handleData = $this->modalWindows[$id]->handle($data, $this);
-			$this->server->getPluginManager()->callEvent($ev = new UIDataReceiveEvent($this, $packet, $handleData));
-			if($ev->isCancelled()){
-				$this->sendModalForm($this->getModalForm($id));
-				$cancel = true;
-			}
-			
-			if(!$cancel){
-			 unset($this->modalWindows[$id]);
-			}
-		}
+		$this->modalForms[$forceId] = $window;
 	}
 		
 	public function sendServerSettings(CustomUI $window){
 		$pk = new ServerSettingsResponsePacket;
-		$pk->formId = $id = $this->modalWindowId++;
+		$pk->formId = $id = $this->modalFormCnt;
 		$pk->formData = json_encode($window->jsonSerialize());
 		$this->dataPacket($pk);
-		$this->modalWindows[$id] = $window;
+		$this->modalForms[$id] = $window;
 	}
 	
 	public function getDefaultServerSettings() : CustomForm{
@@ -4431,16 +4432,16 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 		$this->defaultServerSettings = $form;
 	}
 		
-	public function getModalForm(int $id){
-		return $this->modalWindows[$id] ?? null;
+	public function getForm(int $id){
+		return $this->modalForms[$id] ?? null;
 	}
 	
-	public function getModalFormIndex(CustomUI $form) : int{
-		return (int) @array_search($form, $this->modalWindows);
+	public function getFormIndex(CustomUI $form) : int{
+		return (int) @array_search($form, $this->modalForms);
 	}
 	
-	public function getModalForms() : array{
-		return $this->modalWindows;
+	public function getForms() : array{
+		return $this->modalForms;
 	}
 	
 	public function getXUID() : string{
