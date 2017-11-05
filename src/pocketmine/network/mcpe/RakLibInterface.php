@@ -161,11 +161,11 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface {
 		$this->server->addPlayer($identifier, $player);
 	}
 
-	/**
-	* @param string $identifier
-	* @param EncapsulatedPacket $packet
-	* @param int $flags
-	*/
+    /**
+     * @param string $identifier
+     * @param EncapsulatedPacket $packet
+     * @param int $flags
+     */
 	public function handleEncapsulated($identifier, EncapsulatedPacket $packet, $flags){
 		if(isset($this->players[$identifier])){
 			try{
@@ -178,7 +178,7 @@ class RakLibInterface implements ServerInstance, AdvancedSourceInterface {
 					}
 				}
 			}catch(\Throwable $e){
-				$this->server->getLogger()->debug("Unhandled Packet " . (isset($pk) ? get_class($pk) : "unknown") . " 0x" . bin2hex($packet->buffer));
+				$this->server->getLogger()->debug("Unhandled Packet : " .$e->getMessage());
 			}
 		}
 	}

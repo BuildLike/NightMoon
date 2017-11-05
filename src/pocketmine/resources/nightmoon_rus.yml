@@ -71,6 +71,8 @@ ender:
  level-name: "ender"
 
 server:
+ #Shows NightMoon in Settings Window
+ show-nightmoon: true
  #Разрешает спавн железных големов
  allow-iron-golem: false
  #Разрешает спавн снежных големов

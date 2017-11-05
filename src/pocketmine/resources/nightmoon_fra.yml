@@ -60,6 +60,8 @@ ender:
  level-name: "ender"
 
 server:
+ #Shows NightMoon in Settings Window
+ show-nightmoon: true
  #Choisissez si le golem de genie est autorise
  allow-iron-golem: false
  #Choisissez si le vent de neige qui frappe est autorise

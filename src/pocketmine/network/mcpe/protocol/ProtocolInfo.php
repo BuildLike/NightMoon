@@ -29,7 +29,6 @@ interface ProtocolInfo {
 	 */
 	const CURRENT_PROTOCOL = 137;
 	const ACCEPTED_PROTOCOLS = [137];
-	const MINECRAFT_VERSION = ["v1.2.3"];
 	const MINECRAFT_VERSION_NETWORK = "1.2.3";
 
     const LOGIN_PACKET = 0x01;

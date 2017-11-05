@@ -36,7 +36,7 @@ use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\Player;
 
 class NetworkInventoryAction{
-
+	
 	const SOURCE_CONTAINER = 0;
 	const SOURCE_GLOABAL = 1;
 	const SOURCE_WORLD = 2;
@@ -81,7 +81,7 @@ class NetworkInventoryAction{
 
 	const ACTION_MAGIC_SLOT_DROP_ITEM = 0;
 	const ACTION_MAGIC_SLOT_PICKUP_ITEM = 1;
-
+	
 	const FLAG_RANDOM = 0;
 
 	/** @var int */
@@ -113,15 +113,15 @@ class NetworkInventoryAction{
 				break;
 			case self::SOURCE_CREATIVE:
 				break;
-			case self::SOURCE_TODO:
-				$this->windowId = $packet->getVarInt();
-				switch($this->windowId){
-					case self::SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
-					case self::SOURCE_TYPE_CRAFTING_RESULT:
-						$packet->isCrafting = true;
-					break;
-				}
-				break;
+            case self::SOURCE_TODO:
+                $this->windowId = $packet->getVarInt();
+                switch($this->windowId){
+                    case self::SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
+                    case self::SOURCE_TYPE_CRAFTING_RESULT:
+                        $packet->isCrafting = true;
+                        break;
+                }
+                break;
 		}
 
 		$this->inventorySlot = $packet->getUnsignedVarInt();
@@ -213,5 +213,5 @@ class NetworkInventoryAction{
 		}
 
 		return null;
-	}
+ }
 }
