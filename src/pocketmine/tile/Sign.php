@@ -125,7 +125,7 @@ class Sign extends Spawnable{
 	 */
 	public function getText() : array{
 		return $this->text;
-  	}
+	}
 
 	public function addAdditionalSpawnData(CompoundTag $nbt){
 		$nbt->Text = new StringTag("Text", implode("\n", $this->text));
@@ -166,5 +166,4 @@ class Sign extends Spawnable{
 			return false;
 		}
 	}
-
 }

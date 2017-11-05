@@ -38,7 +38,7 @@ abstract class Spawnable extends Tile {
 		if($this->closed){
 			return false;
 		}
-
+		
 		$nbt = new NBT(NBT::LITTLE_ENDIAN);
 		$nbt->setData($this->getSpawnCompound());
 		$pk = new BlockEntityDataPacket();
@@ -109,8 +109,8 @@ abstract class Spawnable extends Tile {
 	public function updateCompoundTag(CompoundTag $nbt, Player $player) : bool{
 		return false;
 	}
-
+	
 	public function addAdditionalSpawnData(CompoundTag $nbt){
 		
 	}
-} 
+}
