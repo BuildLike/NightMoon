@@ -108,12 +108,6 @@ class VoidGenerator extends Generator {
 		$this->level->setChunk($chunkX, $chunkZ, $chunk);
 	}
 
-	/**
-	 * @param $chunkX
-	 * @param $chunkZ
-	 *
-	 * @return mixed|void
-	 */
 	public function populateChunk($chunkX, $chunkZ){
 	}
 
@@ -121,6 +115,6 @@ class VoidGenerator extends Generator {
 	 * @return Vector3
 	 */
 	public function getSpawn(){
-		return new Vector3(128, 72, 128);
+		return new Vector3(0, 68, 0);
 	}
 }

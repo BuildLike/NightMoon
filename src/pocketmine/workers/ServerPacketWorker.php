@@ -29,7 +29,7 @@
 namespace pocketmine\workers;
 
 use pocketmine\utils\Binary;
-use pocketmine\network\protocol\BatchPacket;
+use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\Worker;
 use pocketmine\Server;
 

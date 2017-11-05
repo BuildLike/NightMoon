@@ -1,74 +1,74 @@
 # PocketMine-MP 主配置文件
-# 此处包含 server.properties 中无法包含的设置
-# 某些设置的修改是安全的，而某些设置修改后将导致服务器无法工作
-# 升级服务器后，新的设置或默认值将不会自动在此处显示
+# 此?包含 server.properties 中无法包含的?置
+# 某些?置的修改是安全的，而某些?置修改后将?致服?器无法工作
+# 升?服?器后，新的?置或默??将不会自?在此??示
 
 settings:
- #服务器端本地化翻译所使用语言，由三个字母组成的代码表示
- #可在 https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes 查询语言代码
+ #服?器端本地化翻?所使用?言，由三个字母?成的代?表示
+ #可在 https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes ???言代?
  language: "chs"
- #是否将由服务器端翻译的上面语言的提示信息发送到客户端，还是由客户端根据玩家选择的语言翻译
+ #是否将由服?器端翻?的上面?言的提示信息?送到客?端，?是由客?端根据玩家??的?言翻?
  force-language: false
- #当服务器关闭时，下列提示信息将在玩家客户端上显示。
- shutdown-message: "服务器已关闭"
- fly-kick-message: "飞行不是启用了在这个服务器"
- #允许通过 Query 查询插件列表
+ #当服?器???，下列提示信息将在玩家客?端上?示。
+ shutdown-message: "服?器已??"
+ fly-kick-message: "?行不是?用了在?个服?器"
+ #允?通? Query ??插件列表
  query-plugins: true
- #当有插件使用已弃用的 API 方法时，在控制台显示信息
+ #当有插件使用已弃用的 API 方法?，在控制台?示信息
  deprecated-verbose: true
- #默认启用插件和核心性能分析
+ #默??用插件和核心性能分析
  enable-profiling: false
- #仅在测量的游戏刻低于或等于设定值时记录结果（默认为 20）
+ #?在?量的游?刻低于或等于?定?????果（默?? 20）
  profile-report-trigger: 20
- #异步任务的线程数。
- #用于插件异步任务、世界生成、压缩和网络传输。
- #将此值设置为大致与您 CPU 的核数相同。
- #当设置为 auto 时，将会尝试自动检测 CPU 核数（或自动设为 2）
+ #??任?的?程数。
+ #用于插件??任?、世界生成、??和网???。
+ #将此??置?大致与? CPU 的核数相同。
+ #当?置? auto ?，将会??自??? CPU 核数（或自??? 2）
  async-workers: auto
- #允许使用非出产的开发版本。警告：除非您知道自己在做什么，否则请勿启用此选项
+ #允?使用非出?的??版本。警告：除非?知道自己在做什?，否??勿?用此??
  enable-testing: false
 
 memory:
- #全局非严格内存限制，以 MB 为单位。设置为 0 可禁用
- #当全局内存占用超过此限制时，将会激活低可用内存触发器并释放内存
+ #全局非?格内存限制，以 MB ??位。?置? 0 可禁用
+ #当全局内存占用超?此限制?，将会激活低可用内存触?器并?放内存
  global-limit: 0
 
- #主线程非严格内存限制，以 MB 为单位。设置为 0 可禁用
- #当主线程内存占用超过此限制时，将会激活低可用内存触发器并释放内存
+ #主?程非?格内存限制，以 MB ??位。?置? 0 可禁用
+ #当主?程内存占用超?此限制?，将会激活低可用内存触?器并?放内存
  main-limit: 0
 
- #主线程严格内存限制，以 MB 为单位。设置为 0 可禁用
- #当主线程内存占用超过此限制时，将会停止服务器
+ #主?程?格内存限制，以 MB ??位。?置? 0 可禁用
+ #当主?程内存占用超?此限制?，将会停止服?器
  main-hard-limit: 1024
 
- #检查内存使用的周期，以游戏刻为单位（默认为 1 秒）
+ #??内存使用的周期，以游?刻??位（默?? 1 秒）
  check-rate: 20
 
- #当内存不足时继续执行低可用内存触发器
+ #当内存不足????行低可用内存触?器
  continuous-trigger: true
 
- #当 memory.continuous-trigger 选项已启用时，指定 memory.check-rate 步骤的速率（默认为 30 秒）
+ #当 memory.continuous-trigger ??已?用?，指定 memory.check-rate ??的速率（默?? 30 秒）
  continuous-trigger-rate: 30
 
  garbage-collection:
-  #垃圾回收的时间间隔（默认为 30 分钟），以游戏刻为单位，设置为 0 可禁用
-  #此设置只影响主线程。其它线程应各自分别进行垃圾回收
+  #??回收的???隔（默?? 30 分?），以游?刻??位，?置? 0 可禁用
+  #此?置只影?主?程。其它?程?各自分??行??回收
   period: 36000
 
-  #执行异步任务，以从各线程回收垃圾
+  #?行??任?，以从各?程回收??
   collect-async-worker: true
 
-  #当内存不足时触发
+  #当内存不足?触?
   low-memory-trigger: true
 
  max-chunks:
-  #当内存不足时每个玩家的最大渲染视距
+  #当内存不足??个玩家的最大?染?距
   chunk-radius: 4
 
-  #触发区块垃圾回收
+  #触?区???回收
   trigger-chunk-collect: true
 
-  #当内存不足时触发
+  #当内存不足?触?
   low-memory-trigger: true
 
  world-caches:
@@ -77,76 +77,76 @@ memory:
 
 
 network:
- #批量处理数据包的阈值，以字节为单位。只有大小大于该阈值的数据包会被压缩
- #设置为 0 可压缩所有数据包，设置为 -1 可禁用。
+ #批量?理数据包的??，以字???位。只有大小大于???的数据包会被??
+ #?置? 0 可??所有数据包，?置? -1 可禁用。
  batch-threshold: 256
- #批量处理数据包时的压缩级别。更高级别 = 更多 CPU 占用，更低级别 = 更多带宽占用
+ #批量?理数据包?的????。更高?? = 更多 CPU 占用，更低?? = 更多??占用
  compression-level: 2
- #使用异步任务进行压缩。将会导致额外 0.5~1 刻的延迟，降低主线程的 CPU 占用
+ #使用??任??行??。将会?致?外 0.5~1 刻的延?，降低主?程的 CPU 占用
  async-compression: true
- #实验性功能，仅适用于 Windows。尝试使用 UPnP 进行自动端口转发
+ #??性功能，??用于 Windows。??使用 UPnP ?行自?端口??
  upnp-forwarding: false
 
 debug:
- #若要启用断言执行，请在 php.ini 中将 zend.assertions 设为 1
+ #若要?用断言?行，?在 php.ini 中将 zend.assertions ?? 1
  assertions:
-  #当 php.ini 中启用断言时发出警告，因为断言可能会影响运行时性能。
+  #当 php.ini 中?用断言??出警告，因?断言可能会影??行?性能。
   warn-if-enabled: true
-  #当断言失败时抛出异常，可允许收集与断言失败相关的更详细的信息，但可能导致服务器崩溃。
-  #当设置为 false 时，将不会抛出异常，而是显示警告信息。
+  #当断言失??抛出?常，可允?收集与断言失?相?的更??的信息，但可能?致服?器崩?。
+  #当?置? false ?，将不会抛出?常，而是?示警告信息。
   throw-exception: false
- #当设置的值大于 1 时，将会在控制台显示调试信息
+ #当?置的?大于 1 ?，将会在控制台?示??信息
  level: 1
- #启用 /status、/gc 命令
+ #?用 /status、/gc 命令
  commands: true
 
 player:
- #选择是否保存玩家数据。
+ #??是否保存玩家数据。
  save-player-data: true
  anti-cheat:
-  #当设置为 false 时，将会尝试阻止疾跑和穿墙作弊。可能导致与某些尚未适配的方块有关的问题。
+  #当?置? false ?，将会??阻止疾?和穿?作弊。可能?致与某些尚未?配的方?有?的??。
   allow-movement-cheats: true
-  #当设置为 false 时，将会检查玩家破坏方块的时间，阻止相关作弊。可能导致与某些尚未适配的方块有关的问题。
+  #当?置? false ?，将会??玩家破坏方?的??，阻止相?作弊。可能?致与某些尚未?配的方?有?的??。
   allow-instabreak: false
 
 level-settings:
- #创建地图时使用的默认格式
+ #?建地??使用的默?格式
  default-format: pmanvil
- #自动更改地图的刷新速度，以维持 20 游戏刻每秒
+ #自?更改地?的刷新速度，以?持 20 游?刻?秒
  auto-tick-rate: false
  auto-tick-rate-limit: 20
- #设定基础刷新速度（1 = 20 游戏刻每秒，2 = 10 游戏刻每秒）
+ #?定基?刷新速度（1 = 20 游?刻?秒，2 = 10 游?刻?秒）
  base-tick-rate: 1
- #每游戏刻都刷新所有玩家，即使其它设置不允许这样做。
+ #?游?刻都刷新所有玩家，即使其它?置不允???做。
  always-tick-players: false
 
 chunk-sending:
- #若要更改服务器正常渲染视距，请在 server.properties 中修改 view-distance。
- #每游戏刻发送给玩家的区块数量
+ #若要更改服?器正常?染?距，?在 server.properties 中修改 view-distance。
+ #?游?刻?送?玩家的区?数量
  per-tick: 2
- #需要在玩家出生前发送的区块半径
+ #需要在玩家出生前?送的区?半径
  spawn-radius: 4
- #为提高区块发送速度，在内存中保存一份区块的序列副本
- #适合在几乎静止、但在同一时间有许多玩家加入的世界使用
+ #?提高区??送速度，在内存中保存一?区?的序列副本
+ #?合在几乎静止、但在同一??有?多玩家加入的世界使用
  cache-chunks: true
- #使用异步任务排序要发送的区块。
+ #使用??任?排序要?送的区?。
  async-chunk-request: false
 
 chunk-ticking:
- #每游戏刻处理的区块数量上限
+ #?游?刻?理的区?数量上限
  per-tick: 16
- #玩家周围随游戏刻更新的区块半径
+ #玩家周?随游?刻更新的区?半径
  tick-radius: 3
  light-updates: false
  clear-tick-list: true
- #禁用随机刻的方块 ID
+ #禁用随机刻的方? ID
  disable-block-ticking:
   #- 2 # grass
 
 chunk-generation:
- #等待生成的区块队列的最大长度
+ #等待生成的区??列的最大?度
  queue-size: 2
- #等待填充的区块队列的最大长度
+ #等待填充的区??列的最大?度
  population-queue-size: 2
 
 ticks-per:
@@ -161,31 +161,26 @@ spawn-limits:
   ambient: 15
 
 auto-report:
- #发送错误报告
+ #?送???告
  enabled: false
  send-code: true
  send-settings: true
  send-phpinfo: false
  host: crash.pocketmine.net
 
-anonymous-statistics:
- #发送用于数据收集和插件使用情况统计的匿名数据
- enabled: true
- host: stats.pocketmine.net
-
 commands:
- #您可以在此处自定义服务器的指令
- #在此处指定指令的名称，以覆盖默认值。
- #如果没有为某个指令设定自定义值，将会为该指令应用默认值。
+ #?可以在此?自定?服?器的指令
+ #在此?指定指令的名称，以覆盖默??。
+ #如果没有?某个指令?定自定??，将会??指令?用默??。
  #注意：部分指令无法在此被禁用，例如 /stop、/reload 等重要指令。
  default: true
- #在此处禁用指令
- #例如，删除下面注释前的井号将会禁用 /version 和 /plugins 指令
+ #在此?禁用指令
+ #例如，?除下面注?前的井号将会禁用 /version 和 /plugins 指令
  #version: false
  #plugins: false
 
 timings:
- #选择查看您的计时数据的主机。
+ #???看?的??数据的主机。
  host: timings.pmmp.io
 
 aliases:
@@ -194,7 +189,7 @@ aliases:
  #savestop: [save-all, stop]
 
 worlds:
- #这些设置将会覆盖 server.properties 中的生成器设置，并允许加载多个世界。
+ #?些?置将会覆盖 server.properties 中的生成器?置，并允?加?多个世界。
  #示例：
  #world:
  # seed: 404

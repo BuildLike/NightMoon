@@ -2277,9 +2277,9 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 			$this->port,
 			$this->id,
 			$this->level->getName(),
-			round($this->x, 4),
-			round($this->y, 4),
-			round($this->z, 4)
+			round($this->x),
+			round($this->y),
+			round($this->z)
 		]));
 
 		if($this->isOp()){
@@ -2985,6 +2985,9 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 				}
 				$target = $this->level->getBlock($pos);
 				$ev = new PlayerInteractEvent($this, $this->inventory->getItemInHand(), $target, $packet->face, $target->getId() === 0 ? PlayerInteractEvent::LEFT_CLICK_AIR : PlayerInteractEvent::LEFT_CLICK_BLOCK);
+				if($this->level->checkSpawnProtection($this, $target)){
+					$ev->setCancelled();
+				}
 				$this->getServer()->getPluginManager()->callEvent($ev);
 				if($ev->isCancelled()){
 					$this->inventory->sendHeldItem($this);
@@ -4474,6 +4477,13 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 		$this->setSkin($ev->getNewSkin());
 		$this->sendSkin($this->server->getOnlinePlayers());
 		return true;
+	}
+
+	/**
+	 * @param array|null $targets
+	 */
+	public function sendSkin(array $targets = null) : void{
+		parent::sendSkin($targets ?? $this->server->getOnlinePlayers());
 	}
 
 	/**
