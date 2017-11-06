@@ -14,7 +14,7 @@
 
 #ファイルのバージョン
 config:
- version: 29
+ version: 30
 
 level:
  #有効にすると、天候要素が加わります（雨が降ると古い端末の動作が遅くなる場合があります）
@@ -51,19 +51,19 @@ developer:
 
 nether:
  #有効(true)にするとネザー(nether)ワールド(Level)が自動的に生成され、ポータルを用いて移動できます
- allow-nether: false
+ allow-nether: true
  #ネザーのワールド(Level)名の設定
  level-name: "nether"
 
 ender:
  #有効(true)にするとジ・エンド(ender)ワールド(Level)が自動的に生成され、ポータルを用いて移動できます
- allow-ender: false
+ allow-ender: true
  #ジ・エンドのワールド(Level)名の設定
  level-name: "ender"
 
 server:
- #有効にするとプレイヤーサーバー設定でNightMoonカスタムUIの表示を許可します
- show-nightmoon: false
+ #有効にするとNightMoonの情報を設定ウィンドウに表示します
+ show-nightmoon: true
  #有効にするとアイアンゴーレムのスポーンを許可します
  allow-iron-golem: false
  #有効にするとスノーゴーレムのスポーンを許可します
@@ -81,8 +81,6 @@ server:
  destroy-block-particle: true
  #有効にするとスプラッシュポーションを許可します
  allow-splash-potion: true
- #有効にすると高度なコマンドセレクタを設定します
- advanced-command-selector: false
  #有効にするとResourcePackManagerを設定します
  enable-resource: false
  #この設定はスポンジブロックによる水の吸収機能を 有効 または 無効 の設定ができます。

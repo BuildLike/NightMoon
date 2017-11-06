@@ -14,7 +14,7 @@
 
 #配置?案版本
 config:
- version: 28
+ version: 30
  
 level:
  #設定是否變換天氣
@@ -53,18 +53,18 @@ developer:
 
 nether:
  #是否允許下界，打開此選項會自動生成下界地圖
- allow-nether: false
+ allow-nether: true
  #下界地圖名
  level-name: "nether"
 
 ender:
  #是否允許末路之地，打開此選項會自動生成末路之地地圖
- allow-ender: false
+ allow-ender: true
  #末路之地地圖名
  level-name: "ender"
  
 server:
- #Shows NightMoon in Settings Window
+ #Shows NightMoon in Settings Window	//We have to translate.
  show-nightmoon: true
  #是否允許生成鐵傀儡
  allow-iron-golem: false
@@ -86,8 +86,6 @@ server:
  destroy-block-particle: true
  #是否允許噴濺型藥水
  allow-splash-potion: true
- #是否?用進階指令選擇器
- advanced-command-selector: false
  #是否讀取ResourcePackManager
  enable-resource: false
  #是否開?海綿的吸水功能

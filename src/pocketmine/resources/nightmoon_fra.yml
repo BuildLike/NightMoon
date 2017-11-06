@@ -14,7 +14,7 @@
 
 #Version de ce fichier
 config:
- version: 28
+ version: 30
 
 level:
  #Reglez si la meteo est activee (la pluie peut provoquer un retard sur les peripheriques plus anciens)
@@ -51,16 +51,16 @@ developer:
 
 nether:
  #Choisissez si le nether est autorise, le niveau de Nether generera automatiquement
- allow-nether: false
+ allow-nether: true
  #Recommande qu'il reste "nether"
  level-name: "nether"
 
 ender:
- allow-ender: false
+ allow-ender: true
  level-name: "ender"
 
 server:
- #Shows NightMoon in Settings Window
+ #Shows NightMoon in Settings Window	//We have to translate.
  show-nightmoon: true
  #Choisissez si le golem de genie est autorise
  allow-iron-golem: false
@@ -79,8 +79,6 @@ server:
  destroy-block-particle: true
  #Reglez si les potions d'eclaboussures sont activees
  allow-splash-potion: true
- # Reglez si les commande de selection sont activees
- advanced-command-selector: false
  #Definir si il faut activer ResourcePackManager
  enable-resource: false
  #This parameter turns on or off the absorption of water by a sponge //TODO: Translation for other languages

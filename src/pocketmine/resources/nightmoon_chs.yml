@@ -14,7 +14,7 @@
 
 #配置文件版本
 config:
- version: 28
+ version: 30
  
 level:
  #?置是否??天气
@@ -53,18 +53,18 @@ developer:
 
 nether:
  #是否允?地?，打?此??会自?生成地?地?
- allow-nether: false
+ allow-nether: true
  #地?地?名
  level-name: "nether"
 
 ender:
  #是否允?末地，打?此??会自?生成下界地?
- allow-ender: false
+ allow-ender: true
  #末地地?名
  level-name: "ender"
  
 server:
- #Shows NightMoon in Settings Window
+ #Shows NightMoon in Settings Window	//We have to translate.
  show-nightmoon: true
  #是否允?生成?傀儡
  allow-iron-golem: false

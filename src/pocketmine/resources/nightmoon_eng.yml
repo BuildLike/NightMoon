@@ -14,7 +14,7 @@
 
 #Version of this file
 config:
- version: 29
+ version: 30
 
 level:
  #Set if weather is enabled (rain may cause lag to older devices)
@@ -51,12 +51,12 @@ developer:
 
 nether:
  #Choose if the nether is allowed. The level of nether will generate automatically
- allow-nether: false
+ allow-nether: true
  #The name of nether's level
  level-name: "nether"
 
 ender:
- allow-ender: false
+ allow-ender: true
  level-name: "ender"
 
 server:
@@ -79,8 +79,6 @@ server:
  destroy-block-particle: true
  #Set if splash potions are enabled
  allow-splash-potion: true
- #Set if Advanced Command Selector is enabled
- advanced-command-selector: false
  #Set if enable ResourcePackManager
  enable-resource: false
  #This parameter turns on or off the absorption of water by a sponge
@@ -100,6 +98,8 @@ redstone:
  ####Choose if the redstone system is enabled####
  ################################################
  #If it is false, the redstone system won't work#
+ ################################################
+ #############Doesn't work Currently#############
  ################################################
  enable: false
  #Choose if frequency pulses are enabled

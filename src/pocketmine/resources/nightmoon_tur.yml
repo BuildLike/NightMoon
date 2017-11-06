@@ -14,7 +14,7 @@
 
 #Dosya surumu
 config:
- version: 28
+ version: 30
 
 level:
  #Aktif yaparsan?z hava durumu aktifle?ir (Eski cihazlarda laga sebep olabilir)
@@ -51,16 +51,16 @@ developer:
 
 nether:
  #E?er aktifse nether aktifle?ir. Otomatik dunya olu?ur
- allow-nether: false
+ allow-nether: true
  #Nether dunyas?n?n ismi
  level-name: "nether"
 
 ender:
- allow-ender: false
+ allow-ender: true
  level-name: "ender"
 
 server:
- #Shows NightMoon in Settings Window
+ #Ayarlarda NightMoon Bilgi Bolumu
  show-nightmoon: true
  #E?er aktifse iron goleme izin verir
  allow-iron-golem: false
@@ -79,8 +79,6 @@ server:
  destroy-block-particle: true
  #E?er aktif ise potion f?rlatabilirsiniz
  allow-splash-potion: true
- #E?er aktif ise geli?mi? komut secimi kullan?rs?n?z
- advanced-command-selector: false
  #E?er aktifse resource packler aktifdir
  enable-resource: false
  #E?er aktifse sunger suyu ceker

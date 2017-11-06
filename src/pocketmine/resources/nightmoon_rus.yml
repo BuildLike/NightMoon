@@ -18,12 +18,9 @@
 #Хотите улучшить перевод?
 #Создайте пулл на github или напишите мне в Telegram
 
-#Github: https://github.com/Turanic/Turanic/pulls
-#Telegram: https://t.me/Yarvoy
-
 #Версия этого файла
 config:
- version: 28
+ version: 30
 
 level:
  #Выберите, включена ли погода (дождь может вызвать лаги на старых устройствах)
@@ -60,18 +57,18 @@ developer:
 
 nether:
  #Нижний мир (ад)
- allow-nether: false
+ allow-nether: true
  #Имя мира
  level-name: "nether"
 
 ender:
  #Край
- allow-ender: false
+ allow-ender: true
  #Имя мира
  level-name: "ender"
 
 server:
- #Shows NightMoon in Settings Window
+ #Shows NightMoon in Settings Window	//We have to translate.
  show-nightmoon: true
  #Разрешает спавн железных големов
  allow-iron-golem: false
@@ -90,8 +87,6 @@ server:
  destroy-block-particle: true
  #Взрывающиеся зелья
  allow-splash-potion: true
- #Эта настройка решает, включен ли расширенный выбор команд
- advanced-command-selector: false
  #Выберите, разрешены ли ресурспаки
  enable-resource: false
  #Этот параметр включает или отключает поглощение воды губкой
