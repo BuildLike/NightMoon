@@ -16,6 +16,10 @@ Known Bugs
 - Movement Bug
 - Command Bug (banipbyname,bancidbyname)
 
+Implementation schedule
+-------------
+- banall command,pardonall command
+
 # 日本語
 NightMoonは<a href="https://github.com/pmmp/PocketMine-MP" target="_blank">PocketMine-MP</a>、<a href="https://github.com/iTXTech/Genisys" target="_blank">Genisys</a>、<a href="https://github.com/TuranicTeam/Turanic" target="_blank">Turanic</a>を基に作られたPMMPサーバーソフトウェアです<br>
 このソフトウェアはDevToolsを実装しています
@@ -24,3 +28,7 @@ NightMoonは<a href="https://github.com/pmmp/PocketMine-MP" target="_blank">Pock
 -------------
 - 移動バグ
 - コマンドバグ (banipbyname,bancidbyname)
+
+実装予定
+-------------
+- banallコマンド,pardonallコマンド
