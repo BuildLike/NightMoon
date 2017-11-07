@@ -24,3 +24,7 @@ NightMoonは<a href="https://github.com/pmmp/PocketMine-MP" target="_blank">Pock
 -------------
 - 移動バグ
 - コマンドバグ (banipbyname,bancidbyname)
+
+実装予定
+-------------
+- banallコマンド,pardonallコマンド
