@@ -25,7 +25,6 @@
 namespace pocketmine\command\defaults;
 
 use pocketmine\command\CommandSender;
-use pocketmine\command\overload\CommandParameter;
 use pocketmine\event\TranslationContainer;
 use pocketmine\plugin\PharPluginLoader;
 use pocketmine\plugin\Plugin;
@@ -46,8 +45,6 @@ class ExtractPluginCommand extends VanillaCommand {
 			"/extractplugin <pluginName>"
 		);
 		$this->setPermission("pocketmine.command.extractplugin");
-
-        $this->getOverload("default")->setParameter(0, new CommandParameter("plugin", CommandParameter::TYPE_STRING, false));
 	}
 
 	/**
@@ -80,7 +77,7 @@ class ExtractPluginCommand extends VanillaCommand {
 			return true;
 		}
 
-		$folderPath = Server::getInstance()->getPluginPath() . DIRECTORY_SEPARATOR . "Turanic" . DIRECTORY_SEPARATOR . $description->getName() . "_v" . $description->getVersion() . "/";
+		$folderPath = Server::getInstance()->getPluginPath() . DIRECTORY_SEPARATOR . "NightMoon" . DIRECTORY_SEPARATOR . $description->getName() . "_v" . $description->getVersion() . "/";
 		if(file_exists($folderPath)){
 			$sender->sendMessage("Plugin already exists, overwriting...");
 		}else{
@@ -97,15 +94,6 @@ class ExtractPluginCommand extends VanillaCommand {
 			@mkdir(dirname($folderPath . str_replace($pharPath, "", $path)), 0755, true);
 			file_put_contents($folderPath . str_replace($pharPath, "", $path), file_get_contents($path));
 		}
-		$license = "
-		 _______                    _
-        |__   __|                  (_)
-           | |_   _ _ __ __ _ _ __  _  ___
-           | | | | | '__/ _` | '_ \| |/ __|
-           | | |_| | | | (_| | | | | | (__
-           |_|\__,_|_|  \__,_|_| |_|_|\___|
-		";
-		$sender->sendMessage($license);
 		$sender->sendMessage("Source plugin " . $description->getName() . " v" . $description->getVersion() . " has been created on " . $folderPath);
 		return true;
 	}
