@@ -17,7 +17,7 @@ Known Bugs
 - Command Bug (banipbyname,bancidbyname)
 - KeepInventory Bug
 
-Implementation schedule
+Implementation Schedule
 -------------
 - banall command , pardonall command
 
@@ -33,4 +33,4 @@ NightMoonは<a href="https://github.com/pmmp/PocketMine-MP" target="_blank">Pock
 
 実装予定
 -------------
-- banallコマンド,pardonallコマンド
+- banallコマンド , pardonallコマンド
