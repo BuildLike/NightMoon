@@ -18,7 +18,7 @@ config:
 
 level:
  #有効にすると、天候要素が加わります（雨が降ると古い端末の動作が遅くなる場合があります）
- weather: true
+ weather: false
  #天気が変わる時間の間隔
  weather-random-duration-min: 6000
  weather-random-duration-max: 12000
@@ -33,11 +33,11 @@ player:
  #有効にすると満腹度要素が機能します
  hunger: true
  #有効にすると経験値要素が機能します
- experience: true
+ experience: false
  #有効にするとプレイヤーが死亡してもインベントリ(プレイヤーの持っている、ブロックやアイテム)を維持します
  keep-inventory: false
  #有効にするとプレイヤーがゲームモードを変更したときにインベントリを消去します
- auto-clear-inventory : true
+ auto-clear-inventory : false
  #有効にするとプレイヤーが死亡しても経験値を維持します
  keep-experience: false
 
@@ -51,13 +51,13 @@ developer:
 
 nether:
  #有効(true)にするとネザー(nether)ワールド(Level)が自動的に生成され、ポータルを用いて移動できます
- allow-nether: true
+ allow-nether: false
  #ネザーのワールド(Level)名の設定
  level-name: "nether"
 
 ender:
  #有効(true)にするとジ・エンド(ender)ワールド(Level)が自動的に生成され、ポータルを用いて移動できます
- allow-ender: true
+ allow-ender: false
  #ジ・エンドのワールド(Level)名の設定
  level-name: "ender"
 

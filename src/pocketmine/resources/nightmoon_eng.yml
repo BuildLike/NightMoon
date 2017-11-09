@@ -18,7 +18,7 @@ config:
 
 level:
  #Set if weather is enabled (rain may cause lag to older devices)
- weather: true
+ weather: false
  #Weather random duration
  weather-random-duration-min: 6000
  weather-random-duration-max: 12000
@@ -33,11 +33,11 @@ player:
  #Set if hunger is enabled
  hunger: true
  #Choose if experience is enabled
- experience: true
+ experience: false
  #Choose if to keep a player's inventory after they die
  keep-inventory: false
  #Clear the inventory of a player upon them changing their gamemode
- auto-clear-inventory : true
+ auto-clear-inventory : false
  #Choose if to keep a player's experience after they die
  keep-experience: false
 
@@ -51,12 +51,12 @@ developer:
 
 nether:
  #Choose if the nether is allowed. The level of nether will generate automatically
- allow-nether: true
+ allow-nether: false
  #The name of nether's level
  level-name: "nether"
 
 ender:
- allow-ender: true
+ allow-ender: false
  level-name: "ender"
 
 server:
