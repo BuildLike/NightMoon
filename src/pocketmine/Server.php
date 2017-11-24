@@ -79,6 +79,7 @@ use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\LongTag;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\StringTag;
+use pocketmine\network\CompressBatchedTask;
 use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
 use pocketmine\network\Network;
 use pocketmine\network\mcpe\protocol\BatchPacket;
@@ -410,16 +411,10 @@ class Server{
 		return \pocketmine\NIGHTMOON_API_VERSION;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getPHPVersion(){
 		return PHP_VERSION;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getPHPOS(){
 		return PHP_OS;
 	}
@@ -1761,17 +1756,16 @@ class Server{
 				"enable-rcon" => false,
 				"rcon.password" => substr(base64_encode(random_bytes(20)), 3, 10),
 				"auto-save" => true,
-				"xbox-auth" => false,
+				"xbox-auth" => true,
 				"view-distance" => 8
 			]);
 
-			$onlineMode = $this->getConfigBoolean("xbox-auth", false);
+			$onlineMode = $this->getConfigBoolean("xbox-auth", true);
 			if(!extension_loaded("openssl")){
 				$this->logger->warning("OpenSSL extension not found");
 				$this->logger->warning("Please configure OpenSSL extension for PHP if you want to use Xbox Live authentication or global resource pack.");
 				$this->setConfigBool("xbox-auth", false);
 			}elseif(!$onlineMode){
-				$this->logger->warning("Online mode has been turned off in server.properties");
 				$this->logger->warning("Xbox Live authentication is disabled.");
 			}
 
@@ -2142,10 +2136,10 @@ class Server{
 	 *
 	 * @param Player[] $players
 	 * @param DataPacket[]|string $packets
-	 * @param bool $forceSync
+	 * @param bool $needACK
 	 * @param bool $immediate
 	 */
-	public function batchPackets(array $players, array $packets, bool $forceSync = false, bool $immediate = false){
+	public function batchPackets(array $players, array $packets, bool $immediate = false, bool $needACK = false){
 		Timings::$playerNetworkTimer->startTiming();
 
 		$targets = [];
@@ -2155,47 +2149,30 @@ class Server{
 			}
 		}
 
-		if(count($targets) > 0){
-			$pays = [];
-			foreach($packets as $pk){
-				if($pk instanceof DataPacket){
-					if(!$pk->isEncoded){
-						$pk->encode();
-					}
-					$pays[] = $pk->buffer;
-				}else{
-					$pays[] = $pk;
-				}
-			}
-			
-			$card = [
-			"compressionLevel" => $this->networkCompressionLevel,
-			"targets" => $targets,
-			"needACK" => false, // TODO
-			"immediate" => $immediate,
-			"packets" => $pays];
-			
-			$this->packetWorker->pushMainToThreadPacket(serialize($card));
-		}
+		if(count($targets) > 0) {
+            $pays = [];
+            foreach ($packets as $pk) {
+                if ($pk instanceof DataPacket) {
+                    if (!$pk->isEncoded) {
+                        $pk->encode();
+                    }
+                    $pays[] = $pk->buffer;
+                } else {
+                    $pays[] = $pk;
+                }
+            }
+
+            $card = [
+                "compressionLevel" => $this->networkCompressionLevel,
+                "targets" => $targets,
+                "needACK" => $needACK, // TODO
+                "immediate" => $immediate,
+                "packets" => $pays];
+
+            $this->packetWorker->pushMainToThreadPacket(serialize($card));
+        }
 
 		Timings::$playerNetworkTimer->stopTiming();
-	}
-
-	public function broadcastPacketsCallback($data, array $identifiers, bool $immediate = false){
-		$pk = new BatchPacket();
-		$pk->payload = $data;
-		$pk->encode();
-		$pk->isEncoded = true;
-
-		foreach($identifiers as $i){
-			if(isset($this->players[$i])){
-				if($immediate){
-				 $this->players[$i]->directDataPacket($pk);
-				}else{
-					$this->players[$i]->dataPacket($pk);
-				}
-			}
-		}
 	}
 
 
@@ -2387,8 +2364,8 @@ class Server{
 		}
 
 		foreach($this->getIPBans()->getEntries() as $entry) {
-			$this->network->blockAddress($entry->getName(), -1);
-		}
+            $this->network->blockAddress($entry->getName(), -1);
+        }
 
 		if($this->getProperty("network.upnp-forwarding", false) == true){
 			$this->logger->info("[UPnP] Trying to port forward...");
@@ -2541,7 +2518,7 @@ class Server{
 	}
 
 	public function onPlayerLogin(Player $player){
-		$this->uniquePlayers[$player->getRawUniqueId()] = $player->getRawUniqueId();
+        $this->uniquePlayers[$player->getRawUniqueId()] = $player->getRawUniqueId();
 		$this->loggedInPlayers[$player->getRawUniqueId()] = $player;
 	}
 
@@ -2560,10 +2537,10 @@ class Server{
 	}
 
 	public function addOnlinePlayer(Player $player){
-		$this->playerList[$player->getRawUniqueId()] = $player;
+        $this->updatePlayerListData($player->getUniqueId(), $player->getId(), $player->getDisplayName(), $player->getSkin(), $player->getXUID());
 
-		$this->updatePlayerListData($player->getUniqueId(), $player->getId(), $player->getDisplayName(), $player->getSkin());
-	}
+        $this->playerList[$player->getRawUniqueId()] = $player;
+    }
 
 	public function removeOnlinePlayer(Player $player){
 		if(isset($this->playerList[$player->getRawUniqueId()])){
@@ -2579,10 +2556,11 @@ class Server{
 	 * @param Skin          $skin
 	 * @param Player[]|null $players
 	 */
-	public function updatePlayerListData(UUID $uuid, int $entityId, string $name, Skin $skin){
+	public function updatePlayerListData(UUID $uuid, int $entityId, string $name, Skin $skin, string $xboxUserId = "", array $players = null){
 		$pk = new PlayerListPacket();
 		$pk->type = PlayerListPacket::TYPE_ADD;
-		$pk->entries[] = PlayerListEntry::createAdditionEntry($uuid, $entityId, $name, $skin);
+
+		$pk->entries[] = PlayerListEntry::createAdditionEntry($uuid, $entityId, $name, $skin, $xboxUserId);
 		$this->broadcastPacket($players ?? $this->playerList, $pk);
 	}
 
@@ -2602,12 +2580,13 @@ class Server{
 	 */
 	public function sendFullPlayerListData(Player $p){
 		$pk = new PlayerListPacket();
-		$pk->type = PlayerListPacket::TYPE_ADD;
-		foreach($this->playerList as $player){
-			$pk->entries[] = PlayerListEntry::createAdditionEntry($player->getUniqueId(), $player->getId(), $player->getDisplayName(), $player->getSkin());
-		}
+        $pk->type = PlayerListPacket::TYPE_ADD;
+        foreach($this->playerList as $player){
+            if($player->getName() == $p->getName()) continue;
+            $pk->entries[] = PlayerListEntry::createAdditionEntry($player->getUniqueId(), $player->getId(), $player->getDisplayName(), $player->getSkin(), $player->getXUID());
+        }
 
-		$p->dataPacket($pk);
+        $p->dataPacket($pk);
 	}
 
 	private function checkTickUpdates($currentTick, $tickTime){
@@ -2672,7 +2651,6 @@ class Server{
 			Timings::$worldSaveTimer->stopTiming();
 		}
 	}
-
 
 	/**
 	 * @return BaseLang

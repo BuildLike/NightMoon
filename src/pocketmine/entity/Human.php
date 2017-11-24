@@ -2,17 +2,12 @@
 
 /*
  *
- *
- *    __    _         _         __   __
- *   |  \  | |_      | |    _  |  \_/  |
- *   |   \ | (_) ___ | |__ | |_|       | ___   ___  ____
- *   | |\ \| | |/ _ \|  _ \| __| |\_/| |/ _ \ / _ \|  _ \
- *   | | \   | | (_| | / \ | |_| |   | | (_) | (_) | | | |
- *   |_|  \__|_|\__  |_| |_|\__|_|   |_|\___/ \___/|_| |_|
- *               __| |
- *              |___/
- *
- *
+ *    _______                    _
+ *   |__   __|                  (_)
+ *      | |_   _ _ __ __ _ _ __  _  ___
+ *      | | | | | '__/ _` | '_ \| |/ __|
+ *      | | |_| | | | (_| | | | | | (__
+ *      |_|\__,_|_|  \__,_|_| |_|_|\___|
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,11 +15,10 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * @author NightMoonTeam
- * @link https://github.com/NightMoonTeam/NightMoon
+ * @author TuranicTeam
+ * @link https://github.com/TuranicTeam/Turanic
  *
- *
-*/
+ */
 
 namespace pocketmine\entity;
 
@@ -35,12 +29,10 @@ use pocketmine\event\player\PlayerExperienceChangeEvent;
 use pocketmine\inventory\EnderChestInventory;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\inventory\PlayerInventory;
-use pocketmine\inventory\SimpleTransactionQueue;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item as ItemItem;
 use pocketmine\math\Math;
 use pocketmine\nbt\NBT;
-use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\IntTag;
@@ -133,6 +125,7 @@ class Human extends Creature implements ProjectileSource, InventoryHolder {
 		if(!$skin->isValid()){
 			throw new \InvalidStateException("Specified skin is not valid, must be 8KiB or 16KiB");
 		}
+		$skin->debloatGeometryData();
 		$this->skin = $skin;
 	}
 
@@ -269,8 +262,14 @@ class Human extends Creature implements ProjectileSource, InventoryHolder {
 			}else{
 				$food = $this->getFood();
 				if($food > 0){
-					$food--;
-					$this->setFood($food);
+				    $check = true;
+					if($this instanceof Player && $this->isCreative()){
+					    $check = false;
+                    }
+                    if($check){
+                        $food--;
+                        $this->setFood($food);
+                    }
 				}
 			}
 		}
@@ -628,17 +627,11 @@ class Human extends Creature implements ProjectileSource, InventoryHolder {
 		$this->xpSeed = $this->namedtag["XpSeed"];
 	}
 
-	/**
-	 * @return int
-	 */
-	public function getAbsorption() : int{
+	public function getAbsorption() : float{
 		return $this->attributeMap->getAttribute(Attribute::ABSORPTION)->getValue();
 	}
 
-	/**
-	 * @param int $absorption
-	 */
-	public function setAbsorption(int $absorption){
+	public function setAbsorption(float $absorption){
 		$this->attributeMap->getAttribute(Attribute::ABSORPTION)->setValue($absorption);
 	}
 
@@ -728,7 +721,9 @@ class Human extends Creature implements ProjectileSource, InventoryHolder {
 
 	public function saveNBT(){
 		parent::saveNBT();
-		$this->namedtag->Inventory = new ListTag("Inventory", [], NBT::TAG_Compound);
+		$nbtinv = new ListTag("Inventory", []);
+		$nbtinv->setTagType(NBT::TAG_Compound);
+		$this->namedtag->Inventory = $nbtinv;
 		if($this->inventory !== null){
 			//Normal inventory
 			$slotCount = $this->inventory->getSize() + $this->inventory->getHotbarSize();
