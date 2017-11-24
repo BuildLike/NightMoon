@@ -1,5 +1,13 @@
 ﻿![NightMoon](https://github.com/NightMoonTeam/NightMoon/blob/master/src/pocketmine/resources/logo.jpg)</br>
 
+| ![Download icon](https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_file_download_black_18px.svg) PHAR |
+| :---: |
+| [![Download](https://img.shields.io/badge/download-latest-blue.svg)](https://jenkins.haniokasai.com/job/NightMoon-12-PMMP/lastSuccessfulBuild/artifact/artifacts/Nightmoon-12-PHP7.phar) |
+
+| ![Website](https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_public_black_18px.svg) |
+| :---: |
+| [![Website](https://img.shields.io/website-up-down-green-red/http/genisys.pro.svg?label=website)](https://nightmoon.cf) |
+
 NightMoon
 ====================
 __A server software for PMMP__
