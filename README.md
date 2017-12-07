@@ -1,8 +1,8 @@
 ﻿![NightMoon](https://github.com/NightMoonTeam/NightMoon/blob/master/src/pocketmine/resources/logo.jpg)</br>
 
-| ![Download icon](https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_file_download_black_18px.svg) PHAR |
-| :---: |
-| [![Download](https://img.shields.io/badge/download-latest-blue.svg)](https://jenkins.haniokasai.com/job/NightMoon-12-PMMP/lastSuccessfulBuild/artifact/artifacts/Nightmoon-12-PHP7.phar) |
+| ![Download icon](https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_file_download_black_18px.svg) PHAR | Twitter |
+| :---: | :---: |
+| [![Download](https://img.shields.io/badge/download-latest-blue.svg)](https://jenkins.haniokasai.com/job/NightMoon-12-PMMP/lastSuccessfulBuild/artifact/artifacts/Nightmoon-12-PHP7.phar) | [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/NightMoon_pmmp) |
 
 | ![Website](https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_public_black_18px.svg) |
 | :---: |
