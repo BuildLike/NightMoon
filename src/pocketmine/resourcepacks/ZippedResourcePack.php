@@ -2,32 +2,34 @@
 
 /*
  *
+ *  ____            _        _   __  __ _                  __  __ ____
+ * |  _ \ ___   ___| | _____| |_|  \/  (_)_ __   ___      |  \/  |  _ \
+ * | |_) / _ \ / __| |/ / _ \ __| |\/| | | '_ \ / _ \_____| |\/| | |_) |
+ * |  __/ (_) | (__|   <  __/ |_| |  | | | | | |  __/_____| |  | |  __/
+ * |_|   \___/ \___|_|\_\___|\__|_|  |_|_|_| |_|\___|     |_|  |_|_|
  *
- *    __    _         _         __   __
- *   |  \  | |_      | |    _  |  \_/  |
- *   |   \ | (_) ___ | |__ | |_|       | ___   ___  ____
- *   | |\ \| | |/ _ \|  _ \| __| |\_/| |/ _ \ / _ \|  _ \
- *   | | \   | | (_| | / \ | |_| |   | | (_) | (_) | | | |
- *   |_|  \__|_|\__  |_| |_|\__|_|   |_|\___/ \___/|_| |_|
- *               __| |
- *              |___/
- *
- *
- *
+ *  _____            _               _____           
+ * / ____|          (_)             |  __ \          
+ *| |  __  ___ _ __  _ ___ _   _ ___| |__) | __ ___  
+ *| | |_ |/ _ \ '_ \| / __| | | / __|  ___/ '__/ _ \ 
+ *| |__| |  __/ | | | \__ \ |_| \__ \ |   | | | (_) |
+ * \_____|\___|_| |_|_|___/\__, |___/_|   |_|  \___/ 
+ *                         __/ |                    
+ *                        |___/                     
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * @author NightMoonTeam
- * @link https://github.com/NightMoonTeam/NightMoon
+ * @author PocketMine Team
+ * @link http://www.pocketmine.net/
  *
  *
 */
 
 /*
- *Zip材?包加?接口
+ *Zip材质包加载接口
  *
 */
 
@@ -74,17 +76,17 @@ class ZippedResourcePack implements ResourcePack {
 		$this->path = $zipPath;
 
 		if(!file_exists($zipPath)){
-			throw new \InvalidArgumentException("无法打?材?包 $zipPath: 文件?无法打?");
+			throw new \InvalidArgumentException("无法打开材质包 $zipPath: 文件夹无法打开");
 		}
 
 		$archive = new \ZipArchive();
 		if(($openResult = $archive->open($zipPath)) !== true){
-			throw new \InvalidStateException("打? $zipPath $openResult");//Yeah, I don't speak, that...
+			throw new \InvalidStateException("打开 $zipPath $openResult");//Yeah, I don't speak, that...
 		}
 
 		if(($manifestData = $archive->getFromName("manifest.json")) === false){
 			if(($manifestData = $archive->getFromName("pack_manifest.json")) === false){
-				throw new \InvalidStateException("无法加?材?包 $zipPath: 找不到主?");
+				throw new \InvalidStateException("无法加载材质包 $zipPath: 找不到主类");
 			}
 		}
 
@@ -92,7 +94,7 @@ class ZippedResourcePack implements ResourcePack {
 
 		$manifest = json_decode($manifestData);
 		if(!self::verifyManifest($manifest)){
-			throw new \InvalidStateException("无法加?材?包 $zipPath: 主???或不完整");
+			throw new \InvalidStateException("无法加载材质包 $zipPath: 主类错误或不完整");
 		}
 
 		$this->manifest = $manifest;

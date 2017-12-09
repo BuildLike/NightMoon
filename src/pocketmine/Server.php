@@ -299,10 +299,7 @@ class Server{
 	public $dserverConfig = [];
 	public $dserverPlayers = 0;
 	public $dserverAllPlayers = 0;
-	public $redstoneEnabled = false;
-	public $allowFrequencyPulse = true;
 	public $anvilEnabled = false;
-	public $pulseFrequency = 20;
 	public $playerMsgType = self::PLAYER_MSG_TYPE_MESSAGE;
 	public $playerLoginMsg = "";
 	public $playerLogoutMsg = "";
@@ -1513,8 +1510,10 @@ class Server{
 	}
 
 	public function about(){
+		$date = date("Y/m/d D H:i T");
 		$version = implode(",",ProtocolInfo::MINECRAFT_VERSION);
 		$protocol = implode(",",ProtocolInfo::ACCEPTED_PROTOCOLS);
+		$ip = Utils::getIP();
 		$string = TextFormat::BOLD.TextFormat::WHITE."
   __    _         _         __   __            
  |  \  | |_      | |    _  |  \_/  |           
@@ -1525,6 +1524,8 @@ class Server{
              __| |
             |___/
 
+	§r§bDate: §6" . $date . "§f
+
 	§r§bVersion: §6" . $this->getPocketMineVersion() . "§f
 	§r§bAPI: §6" . $this->getApiVersion() . "§f
 	§r§bCodename: §6" . $this->getCodename() . "§f
@@ -1532,7 +1533,10 @@ class Server{
 	§r§bAccepted Protocols: §6" . $protocol . "§f
 	§r§bPHP Version: §6" . $this->getPHPVersion() . "§f
 	§r§bOS: §6" . $this->getPHPOS() ."§f
-	§r§bGithub: §6https://github.com/NightMoonTeam§f
+
+	§r§bWebsite: §6https://nightmoon.cf§f
+	§r§bGithub: §6https://github.com/NightMoonTeam/NightMoon§f
+	§r§bTwitter: §6@NightMoon_pmmp§f
 	";
 		$this->getLogger()->directSend($string);
 	}
@@ -1572,9 +1576,6 @@ class Server{
 			"retryTimes" => $this->getAdvancedProperty("dserver.retry-times", 3),
 			"serverList" => explode(";", $this->getAdvancedProperty("dserver.server-list", ""))
 		];
-		$this->redstoneEnabled = $this->getAdvancedProperty("redstone.enable", false);
-		$this->allowFrequencyPulse = $this->getAdvancedProperty("redstone.allow-frequency-pulse", false);
-		$this->pulseFrequency = $this->getAdvancedProperty("redstone.pulse-frequency", 20);
 		$this->getLogger()->setWrite(!$this->getAdvancedProperty("server.disable-log", false));
 		$this->limitedCreative = $this->getAdvancedProperty("server.limited-creative", true);
 		$this->chunkRadius = $this->getAdvancedProperty("player.chunk-radius", -1);
@@ -1733,6 +1734,12 @@ class Server{
 
 			$this->loadAdvancedConfig();
 
+			$this->serverinfo = new Config($this->dataPath . "info.yml", Config::YAML, [
+				"title" => "NightMoon",
+				"icon" => "https://nightmoon.cf/images/icon/icon.jpg",
+				"message" => "NightMoon is a server software for MC:BE\ngithub: https://github.com/NightMoonTeam/NightMoon\nHomepage: https://nightmoon.cf\nTwitter: @NightMoon_pmmp"
+			]);
+
 			$this->properties = new Config($this->dataPath . "server.properties", Config::PROPERTIES, [
 				"motd" => "NightMoon",
 				"server-port" => 19132,
@@ -1823,6 +1830,7 @@ class Server{
 			@touch($this->dataPath . "banned-cids.txt");
 			$this->banByCID = new BanList($this->dataPath . "banned-cids.txt");
 			$this->banByCID->load();
+			$this->banall = new Config($this->dataPath . "banned-all.txt", Config::YAML);
 
 			$this->maxPlayers = $this->getConfigInt("max-players", 20);
 			$this->setAutoSave($this->getConfigBoolean("auto-save", true));
@@ -2582,7 +2590,7 @@ class Server{
 		$pk = new PlayerListPacket();
         $pk->type = PlayerListPacket::TYPE_ADD;
         foreach($this->playerList as $player){
-            if($player->getName() == $p->getName()) continue;
+            if($player === $p) continue;
             $pk->entries[] = PlayerListEntry::createAdditionEntry($player->getUniqueId(), $player->getId(), $player->getDisplayName(), $player->getSkin(), $player->getXUID());
         }
 

@@ -30,7 +30,7 @@ use pocketmine\utils\Config;
 use pocketmine\utils\Utils;
 
 class Installer {
-	const DEFAULT_NAME = "NightMoon";
+	const DEFAULT_NAME = "Turanic Server";
 	const DEFAULT_PORT = 19132;
 	const DEFAULT_MEMORY = 512;
 	const DEFAULT_PLAYERS = 20;
@@ -63,7 +63,7 @@ class Installer {
 	 * @return bool
 	 */
 	public function run(){
-		echo "[*] NightMoon set-up wizard\n";
+		echo "[*] Turanic set-up wizard\n";
 		echo "[*] Please select a language:\n";
 		foreach(InstallerLang::$languages as $short => $native){
 			echo " $native => $short\n";
@@ -288,6 +288,4 @@ LICENSE;
 
 		return $input === "" ? $default : $input;
 	}
-
-
 }

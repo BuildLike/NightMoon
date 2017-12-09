@@ -3,16 +3,12 @@
 /*
  *
  *
- *    __    _         _         __   __
- *   |  \  | |_      | |    _  |  \_/  |
- *   |   \ | (_) ___ | |__ | |_|       | ___   ___  ____
- *   | |\ \| | |/ _ \|  _ \| __| |\_/| |/ _ \ / _ \|  _ \
- *   | | \   | | (_| | / \ | |_| |   | | (_) | (_) | | | |
- *   |_|  \__|_|\__  |_| |_|\__|_|   |_|\___/ \___/|_| |_|
- *               __| |
- *              |___/
- *
- *
+ *    _______                    _
+ *   |__   __|                  (_)
+ *      | |_   _ _ __ __ _ _ __  _  ___
+ *      | | | | | '__/ _` | '_ \| |/ __|
+ *      | | |_| | | | (_| | | | | | (__
+ *      |_|\__,_|_|  \__,_|_| |_|_|\___|
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,8 +16,8 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * @author NightMoonTeam
- * @link https://github.com/NightMoonTeam/NightMoon
+ * @author TuranicTeam
+ * @link https://github.com/TuranicTeam/Turanic
  *
  *
 */
@@ -64,15 +60,15 @@ class PluginCommand extends Command implements PluginIdentifiableCommand {
 			return false;
 		}
 
-		if(!$this->testPermission($sender)){
+		if(!$this->canExecute($sender)){
 			return false;
 		}
 
 		$success = $this->executor->onCommand($sender, $this, $commandLabel, $args);
 
 		if(!$success and $this->usageMessage !== ""){
-			$sender->sendMessage(new TranslationContainer("commands.generic.usage", [$this->usageMessage]));
-		}
+            $sender->sendMessage($sender->getServer()->getLanguage()->translateString("commands.generic.usage", [$this->usageMessage]));
+        }
 
 		return $success;
 	}

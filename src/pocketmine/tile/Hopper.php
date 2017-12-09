@@ -22,7 +22,7 @@
 namespace pocketmine\tile;
 
 use pocketmine\block\Hopper as HopperBlock;
-use pocketmine\entity\Item as DroppedItem;
+use pocketmine\entity\object\Item as DroppedItem;
 use pocketmine\inventory\HopperInventory;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\item\Item;
@@ -283,7 +283,7 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 	/**
 	 * @param void $str
 	 */
-	public function setName($str){
+	public function setName(string $str){
 		if($str === ""){
 			unset($this->namedtag->CustomName);
 			return;

@@ -21,7 +21,7 @@
 
 namespace pocketmine\block;
 
-use pocketmine\entity\Arrow;
+use pocketmine\entity\object\Arrow;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
 use pocketmine\event\block\BlockBurnEvent;
@@ -188,7 +188,7 @@ class Fire extends Flowable {
 										$k += ($y - ($this->y + 1)) * 100;
 									}
 
-									$chance = $this->getChanceOfNeighborsEncouragingFire($this->getLevel()->getBlock($this->temporalVector->setComponents($x, $y, $z)));
+									$chance = $this->getChanceOfNeighborsEncouragingFire($this->getLevel()->getBlockAt($x, $y, $z));
 
 									if($chance > 0){
 										$t = ($chance + 40 + $this->getLevel()->getServer()->getDifficulty() * 7);

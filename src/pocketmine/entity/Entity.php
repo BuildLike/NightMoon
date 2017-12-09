@@ -32,7 +32,70 @@ use pocketmine\block\Portal;
 use pocketmine\block\PressurePlate;
 use pocketmine\block\Water;
 use pocketmine\block\SlimeBlock;
-use pocketmine\entity\Item as DroppedItem;
+use pocketmine\entity\boss\ElderGuardian;
+use pocketmine\entity\boss\EnderDragon;
+use pocketmine\entity\boss\Wither;
+use pocketmine\entity\hostile\Blaze;
+use pocketmine\entity\hostile\Creeper;
+use pocketmine\entity\hostile\Endermite;
+use pocketmine\entity\hostile\Evoker;
+use pocketmine\entity\hostile\Ghast;
+use pocketmine\entity\hostile\Guardian;
+use pocketmine\entity\hostile\Husk;
+use pocketmine\entity\hostile\LavaSlime;
+use pocketmine\entity\hostile\Shulker;
+use pocketmine\entity\hostile\Silverfish;
+use pocketmine\entity\hostile\Skeleton;
+use pocketmine\entity\hostile\SkeletonHorse;
+use pocketmine\entity\hostile\Slime;
+use pocketmine\entity\hostile\Stray;
+use pocketmine\entity\hostile\Vex;
+use pocketmine\entity\hostile\Vindicator;
+use pocketmine\entity\hostile\Witch;
+use pocketmine\entity\hostile\WitherSkeleton;
+use pocketmine\entity\hostile\Zombie;
+use pocketmine\entity\hostile\ZombieHorse;
+use pocketmine\entity\hostile\ZombieVillager;
+use pocketmine\entity\neutral\CaveSpider;
+use pocketmine\entity\neutral\Enderman;
+use pocketmine\entity\neutral\PigZombie;
+use pocketmine\entity\neutral\PolarBear;
+use pocketmine\entity\neutral\Spider;
+use pocketmine\entity\object\Arrow;
+use pocketmine\entity\object\Boat;
+use pocketmine\entity\object\Egg;
+use pocketmine\entity\object\EnderPearl;
+use pocketmine\entity\object\FallingSand;
+use pocketmine\entity\object\FishingHook;
+use pocketmine\entity\object\Lightning;
+use pocketmine\entity\object\Minecart;
+use pocketmine\entity\object\MinecartChest;
+use pocketmine\entity\object\MinecartHopper;
+use pocketmine\entity\object\MinecartTNT;
+use pocketmine\entity\object\Painting;
+use pocketmine\entity\object\PrimedTNT;
+use pocketmine\entity\object\Snowball;
+use pocketmine\entity\object\ThrownExpBottle;
+use pocketmine\entity\object\ThrownPotion;
+use pocketmine\entity\object\XPOrb;
+use pocketmine\entity\object\Item as DroppedItem;
+use pocketmine\entity\passive\Bat;
+use pocketmine\entity\passive\Chicken;
+use pocketmine\entity\passive\Cow;
+use pocketmine\entity\passive\Mooshroom;
+use pocketmine\entity\passive\Pig;
+use pocketmine\entity\passive\Rabbit;
+use pocketmine\entity\passive\Sheep;
+use pocketmine\entity\passive\Squid;
+use pocketmine\entity\passive\Villager;
+use pocketmine\entity\tameable\Donkey;
+use pocketmine\entity\tameable\Horse;
+use pocketmine\entity\tameable\Llama;
+use pocketmine\entity\tameable\Mule;
+use pocketmine\entity\tameable\Ocelot;
+use pocketmine\entity\tameable\Wolf;
+use pocketmine\entity\utility\SnowGolem;
+use pocketmine\entity\utility\IronGolem;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDespawnEvent;
 use pocketmine\event\entity\EntityEffectAddEvent;
@@ -411,9 +474,6 @@ abstract class Entity extends Location implements Metadatable {
 
 
 	protected $riding = null;
-
-	/** @var PressurePlate */
-	protected $activatedPressurePlates = [];
 
 	public $dropExp = [0, 0];
 
@@ -1334,17 +1394,15 @@ abstract class Entity extends Location implements Metadatable {
 			return false;
 		}
 
-        if(count($this->effects) > 0){
-            foreach($this->effects as $effect){
-                if($effect->canTick()){
-                    $effect->applyEffect($this);
-                }
-                $duration = $effect->getDuration() - $tickDiff;
-                if($duration <= 0){
-                    $this->removeEffect($effect->getId());
-                }else{
-                    $effect->setDuration($duration);
-                }
+        foreach($this->effects as $effect){
+            if($effect->canTick()){
+                $effect->applyEffect($this);
+            }
+            $duration = $effect->getDuration() - $tickDiff;
+            if($duration <= 0){
+                $this->removeEffect($effect->getId());
+            }else{
+                $effect->setDuration($duration);
             }
         }
 
@@ -1478,7 +1536,7 @@ abstract class Entity extends Location implements Metadatable {
 
 		if(!$this->isAlive()){
 			++$this->deadTicks;
-			if($this->deadTicks >= 20){
+			if($this->deadTicks >= 25){
 				$this->despawnFromAll();
 				if(!$this->isPlayer){
 					$this->close();
@@ -1609,7 +1667,7 @@ abstract class Entity extends Location implements Metadatable {
 		if($this->isInsideOfWater()){
 			return;
 		}
-		$damage = floor($fallDistance - 3 - ($this->hasEffect(Effect::JUMP) ? $this->getEffect(Effect::JUMP)->getAmplifier() + 1 : 0));
+		$damage = ceil($fallDistance - 3 - ($this->hasEffect(Effect::JUMP) ? $this->getEffect(Effect::JUMP)->getAmplifier() + 1 : 0));
 
 		//Get the block directly beneath the player's feet, check if it is a slime block
 		if($this->getLevel()->getBlock($this->floor()->subtract(0, 1, 0)) instanceof SlimeBlock){
@@ -1643,10 +1701,10 @@ abstract class Entity extends Location implements Metadatable {
 	}
 
 	/**
-	 * @param Human $entityPlayer
+	 * @param Player $player
 	 */
-	public function onCollideWithPlayer(Human $entityPlayer){
-
+	public function onCollideWithPlayer(Player $player) : bool{
+        return false;
 	}
 
 	/**
@@ -1714,7 +1772,7 @@ abstract class Entity extends Location implements Metadatable {
 	 * @return bool
 	 */
 	public function isInsideOfWater(){
-		$block = $this->level->getBlock($this->temporalVector->setComponents(Math::floorFloat($this->x), Math::floorFloat($y = ($this->y + $this->getEyeHeight())), Math::floorFloat($this->z)));
+		$block = $this->level->getBlockAt(Math::floorFloat($this->x), Math::floorFloat($y = ($this->y + $this->getEyeHeight())), Math::floorFloat($this->z));
 
 		if($block instanceof Water){
 			$f = ($block->y + 1) - ($block->getFluidHeightPercent() - 0.1111111);
@@ -1729,7 +1787,7 @@ abstract class Entity extends Location implements Metadatable {
 	 * @return bool
 	 */
 	public function isInsideOfSolid(){
-		$block = $this->level->getBlock($this->temporalVector->setComponents(Math::floorFloat($this->x), Math::floorFloat($y = ($this->y + $this->getEyeHeight())), Math::floorFloat($this->z)));
+		$block = $this->level->getBlockAt(Math::floorFloat($this->x), Math::floorFloat($y = ($this->y + $this->getEyeHeight())), Math::floorFloat($this->z));
 
 		$bb = $block->getBoundingBox();
 
@@ -1798,6 +1856,7 @@ abstract class Entity extends Location implements Metadatable {
         if($dx == 0 and $dz == 0 and $dy == 0){
             return true;
         }
+
         if($this->keepMovement){
             $this->boundingBox->offset($dx, $dy, $dz);
             $this->setPosition($this->temporalVector->setComponents(($this->boundingBox->minX + $this->boundingBox->maxX) / 2, $this->boundingBox->minY, ($this->boundingBox->minZ + $this->boundingBox->maxZ) / 2));
@@ -1909,7 +1968,7 @@ abstract class Entity extends Location implements Metadatable {
 			for($z = $minZ; $z <= $maxZ; ++$z){
 				for($x = $minX; $x <= $maxX; ++$x){
 					for($y = $minY; $y <= $maxY; ++$y){
-						$block = $this->level->getBlock($this->temporalVector->setComponents($x, $y, $z));
+						$block = $this->level->getBlockAt($x, $y, $z);
 						if($block->hasEntityCollision()){
 							$this->blocksAround[Level::blockHash($block->x, $block->y, $block->z)] = $block;
 						}
@@ -2173,13 +2232,10 @@ abstract class Entity extends Location implements Metadatable {
 			}
 			if($this->getLevel() !== null){
 				$this->getLevel()->removeEntity($this);
-				//$this->setLevel(null);
 			}
 
 			$this->namedtag = null;
 		}
-
-		$this->activatedPressurePlates = [];
 
 		if($this->attributeMap != null){
 			$this->attributeMap = null;
@@ -2414,4 +2470,7 @@ abstract class Entity extends Location implements Metadatable {
 		list($this->lastMotionX, $this->lastMotionY, $this->lastMotionZ) = [$this->motionX, $this->motionY, $this->motionZ];
 	}
 
+	public function doesTriggerPressurePlate() : bool{
+	    return false;
+    }
 }

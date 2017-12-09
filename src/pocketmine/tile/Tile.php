@@ -37,7 +37,8 @@ abstract class Tile extends Position {
 
 	const BREWING_STAND = "BrewingStand";
 	const CHEST = "Chest";
-	const DL_DETECTOR = "DayLightDetector";
+	const COMMAND_BLOCK = "CommandBlock";
+	const DL_DETECTOR = "DLDetector";
 	const ENCHANT_TABLE = "EnchantTable";
 	const FLOWER_POT = "FlowerPot";
 	const FURNACE = "Furnace";
@@ -88,6 +89,7 @@ abstract class Tile extends Position {
 		self::registerTile(BrewingStand::class);
 		self::registerTile(Cauldron::class);
 		self::registerTile(Chest::class);
+		self::registerTile(CommandBlock::class);
 		self::registerTile(Dispenser::class);
 		self::registerTile(DLDetector::class);
 		self::registerTile(Dropper::class);
@@ -101,6 +103,7 @@ abstract class Tile extends Position {
 		self::registerTile(Skull::class);
 		self::registerTile(VirtualHolder::class);
 		self::registerTile(Jukebox::class);
+		self::registerTile(Hopper::class);
 	}
 
 	/**
@@ -202,7 +205,7 @@ abstract class Tile extends Position {
 	 * @return \pocketmine\block\Block
 	 */
 	public function getBlock(){
-		return $this->level->getBlock($this);
+		return $this->level->getBlockAt($this->x, $this->y, $this->z);
 	}
 
 	/**

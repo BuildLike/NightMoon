@@ -2,26 +2,28 @@
 
 /*
  *
+ *  ____            _        _   __  __ _                  __  __ ____
+ * |  _ \ ___   ___| | _____| |_|  \/  (_)_ __   ___      |  \/  |  _ \
+ * | |_) / _ \ / __| |/ / _ \ __| |\/| | | '_ \ / _ \_____| |\/| | |_) |
+ * |  __/ (_) | (__|   <  __/ |_| |  | | | | | |  __/_____| |  | |  __/
+ * |_|   \___/ \___|_|\_\___|\__|_|  |_|_|_| |_|\___|     |_|  |_|_|
  *
- *    __    _         _         __   __
- *   |  \  | |_      | |    _  |  \_/  |
- *   |   \ | (_) ___ | |__ | |_|       | ___   ___  ____
- *   | |\ \| | |/ _ \|  _ \| __| |\_/| |/ _ \ / _ \|  _ \
- *   | | \   | | (_| | / \ | |_| |   | | (_) | (_) | | | |
- *   |_|  \__|_|\__  |_| |_|\__|_|   |_|\___/ \___/|_| |_|
- *               __| |
- *              |___/
- *
- *
- *
+ *  _____            _               _____           
+ * / ____|          (_)             |  __ \          
+ *| |  __  ___ _ __  _ ___ _   _ ___| |__) | __ ___  
+ *| | |_ |/ _ \ '_ \| / __| | | / __|  ___/ '__/ _ \ 
+ *| |__| |  __/ | | | \__ \ |_| \__ \ |   | | | (_) |
+ * \_____|\___|_| |_|_|___/\__, |___/_|   |_|  \___/ 
+ *                         __/ |                    
+ *                        |___/                     
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * @author NightMoonTeam
- * @link https://github.com/NightMoonTeam/NightMoon
+ * @author Turanic
+ * @link https://github.com/Turanic/Turanic
  *
  *
 */
@@ -276,7 +278,7 @@ class PluginManager {
 
 							if($compatible === false){
 								if($this->server->loadIncompatibleAPI === true){
-									$this->server->getLogger()->debug("插件{$name}的API与服?器不符,但NightMoon仍然加?了它");
+									$this->server->getLogger()->debug("Plugin {$name} API does not match the server, but NightMoon still adds it");
 								}else{
 									$this->server->getLogger()->error($this->server->getLanguage()->translateString("pocketmine.plugin.loadError", [$name, "%pocketmine.plugin.incompatibleAPI"]));
 									continue;
@@ -284,7 +286,7 @@ class PluginManager {
 							}
 
 							if($compatiblegeniapi === false){
-								$this->server->getLogger()->error("Could not load plugin '{$description->getName()}': Incompatible GeniAPI version");
+								$this->server->getLogger()->error("Could not load plugin '{$description->getName()}': Incompatible NightMoonAPI version");
 								continue;
 							}
 

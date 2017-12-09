@@ -29,12 +29,15 @@ use pocketmine\Player;
 use pocketmine\tile\DLDetector;
 use pocketmine\tile\Tile;
 
-class DaylightDetector extends RedstoneSource {
-	protected $id = self::DAYLIGHT_SENSOR;
+class DaylightDetector extends Transparent {
 
-	//protected $hasStartedUpdate = false;
+	protected $id = self::DAYLIGHT_DETECTOR;
 
-	/**
+	public function __construct($meta = 0){
+        $this->meta = 0;
+	}
+
+    /**
 	 * @return string
 	 */
 	public function getName() : string{
@@ -66,7 +69,7 @@ class DaylightDetector extends RedstoneSource {
 	}
 
 	/**
-	 * @return DLDetector
+	 * @return DLDetector|null
 	 */
 	protected function getTile(){
 		$t = $this->getLevel()->getTile($this);
@@ -79,7 +82,9 @@ class DaylightDetector extends RedstoneSource {
 				new IntTag("y", $this->y),
 				new IntTag("z", $this->z)
 			]);
-			return Tile::createTile(Tile::DL_DETECTOR, $this->getLevel(), $nbt);
+			$t = Tile::createTile(Tile::DL_DETECTOR, $this->getLevel(), $nbt);
+            if($t instanceof DLDetector) return $t;
+            return null;
 		}
 	}
 
@@ -102,16 +107,6 @@ class DaylightDetector extends RedstoneSource {
 	 */
 	public function isActivated(Block $from = null){
 		return $this->getTile()->isActivated();
-	}
-
-	/**
-	 * @param Item $item
-	 *
-	 * @return mixed|void
-	 */
-	public function onBreak(Item $item){
-		$this->getLevel()->setBlock($this, new Air());
-		if($this->isActivated()) $this->deactivate();
 	}
 
 	/**
@@ -138,4 +133,12 @@ class DaylightDetector extends RedstoneSource {
 			[self::DAYLIGHT_SENSOR, 0, 1]
 		];
 	}
+
+	public function isRedstoneSource(){
+        return true;
+    }
+
+    public function getWeakPower(int $side): int{
+        return $this->getTile()->getLightByTime();
+    }
 }

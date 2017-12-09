@@ -23,7 +23,7 @@ namespace pocketmine\tile;
 
 
 use pocketmine\entity\Entity;
-use pocketmine\entity\Item as ItemEntity;
+use pocketmine\entity\object\Item as ItemEntity;
 use pocketmine\inventory\DispenserInventory;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\item\Item;
@@ -171,7 +171,7 @@ class Dispenser extends Spawnable implements InventoryHolder, Container, Nameabl
 	/**
 	 * @param void $str
 	 */
-	public function setName($str){
+	public function setName(string $str){
 		if($str === ""){
 			unset($this->namedtag->CustomName);
 			return;
