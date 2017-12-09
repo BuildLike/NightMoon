@@ -57,13 +57,12 @@ class MakeServerCommand extends VanillaCommand {
 		}
 
 		$server = $sender->getServer();
-		$pharPath = Server::getInstance()->getPluginPath() . DIRECTORY_SEPARATOR . "Turanic" . DIRECTORY_SEPARATOR . $server->getName() . "_" . $server->getPocketMineVersion() . "_" . date("Y-m-d") . ".phar";
+		$pharPath = Server::getInstance()->getPluginPath() . DIRECTORY_SEPARATOR . "NightMoon" . DIRECTORY_SEPARATOR . $server->getName() . "_" . $server->getPocketMineVersion() . "_" . date("Y-m-d-H-i") . ".phar";
 		if(file_exists($pharPath)){
 			$sender->sendMessage("Phar file already exists, overwriting...");
 			@unlink($pharPath);
 		}
-        $sender->sendMessage($server->getName() . " Phar has begun to be created. This will take 4-5 minutes (may vary depending on your system).");
-        $phar = new \Phar($pharPath);
+		$phar = new \Phar($pharPath);
 		$phar->setMetadata([
 			"name" => $server->getName(),
 			"version" => $server->getPocketMineVersion(),
@@ -78,13 +77,13 @@ class MakeServerCommand extends VanillaCommand {
 
 		$filePath = substr(\pocketmine\PATH, 0, 7) === "phar://" ? \pocketmine\PATH : realpath(\pocketmine\PATH) . "/";
 		$filePath = rtrim(str_replace("\\", "/", $filePath), "/") . "/";
+		$sender->sendMessage("[NightMoon] Adding Files...");
 		foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($filePath . "src")) as $file){
 			$path = ltrim(str_replace(["\\", $filePath], ["/", ""], $file), "/");
 			if($path{0} === "." or strpos($path, "/.") !== false or substr($path, 0, 4) !== "src/"){
 				continue;
 			}
 			$phar->addFile($file, $path);
-			//$sender->sendMessage("[Turanic] Adding $path");
 		}
 		foreach($phar as $file => $finfo){
 			/** @var \PharFileInfo $finfo */
