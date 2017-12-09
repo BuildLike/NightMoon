@@ -43,7 +43,8 @@ class ExtractPluginCommand extends VanillaCommand {
 		parent::__construct(
 			$name,
 			"Extracts the source code from a Phar plugin",
-			"/extractplugin <pluginName>"
+			"/extractplugin <pluginName>",
+			["ep"]
 		);
 		$this->setPermission("pocketmine.command.extractplugin");
 

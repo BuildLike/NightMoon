@@ -42,7 +42,8 @@ class MakePluginCommand extends VanillaCommand {
 		parent::__construct(
 			$name,
 			"Creates a Phar plugin from a unarchived",
-			"/makeplugin <pluginName>"
+			"/makeplugin <pluginName>",
+			["mp"]
 		);
 		$this->setPermission("pocketmine.command.makeplugin");
 	}
