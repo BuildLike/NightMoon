@@ -149,7 +149,7 @@ class SimpleCommandMap implements CommandMap {
             new LoadPluginCommand("loadplugin"),
             new LvdatCommand("lvdat"),
             new MakePluginCommand("makeplugin"),
-            new MakeServerCommand("ms"),
+            new MakeServerCommand("makeserver"),
             new MeCommand("me"),
             new OpCommand("op"),
             new PardonCidCommand("pardoncid"),
