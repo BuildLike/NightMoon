@@ -2,12 +2,17 @@
 
 /*
  *
- *    _______                    _
- *   |__   __|                  (_)
- *      | |_   _ _ __ __ _ _ __  _  ___
- *      | | | | | '__/ _` | '_ \| |/ __|
- *      | | |_| | | | (_| | | | | | (__
- *      |_|\__,_|_|  \__,_|_| |_|_|\___|
+ *
+ *    __    _         _         __   __
+ *   |  \  | |_      | |    _  |  \_/  |
+ *   |   \ | (_) ___ | |__ | |_|       | ___   ___  ____
+ *   | |\ \| | |/ _ \|  _ \| __| |\_/| |/ _ \ / _ \|  _ \
+ *   | | \   | | (_| | / \ | |_| |   | | (_) | (_) | | | |
+ *   |_|  \__|_|\__  |_| |_|\__|_|   |_|\___/ \___/|_| |_|
+ *               __| |
+ *              |___/
+ *
+ *
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,8 +20,9 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * @author TuranicTeam
- * @link https://github.com/TuranicTeam/Turanic
+ * @author NightMoonTeam
+ * @link https://github.com/NightMoonTeam/NightMoon
+ *
  *
 */
 
@@ -27,10 +33,10 @@ interface ProtocolInfo {
 	/**
 	 * Actual Minecraft: PE protocol version
 	 */
-	const CURRENT_PROTOCOL = 150;
-	const ACCEPTED_PROTOCOLS = [150];
-	const MINECRAFT_VERSION = ["v1.2.6"];
-	const MINECRAFT_VERSION_NETWORK = "1.2.6";
+	const CURRENT_PROTOCOL = 160;
+	const ACCEPTED_PROTOCOLS = [160];
+	const MINECRAFT_VERSION = ["v1.2.7"];
+	const MINECRAFT_VERSION_NETWORK = "1.2.7";
 
     const LOGIN_PACKET = 0x01;
     const PLAY_STATUS_PACKET = 0x02;
