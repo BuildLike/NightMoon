@@ -272,7 +272,7 @@ class Item implements ItemIds, \JsonSerializable {
 			self::$list[self::PRISMARINE_CRYSTALS] = PrismarineCrystals::class;
 			self::$list[self::PRISMARINE_SHARD] = PrismarineShard::class;
 			self::$list[self::FIRE_CHARGE] = FireCharge::class;
-			
+			self::$list[self::ARMOR_STAND] = ArmorStand::class;
 			self::$list[self::MUSIC_DISC_13] = MusicDisc13::class;
 			self::$list[self::MUSIC_DISC_CAT] = MusicDiscCat::class;
 			self::$list[self::MUSIC_DISC_BLOCKS] = MusicDiscBlocks::class;
@@ -303,15 +303,24 @@ class Item implements ItemIds, \JsonSerializable {
 	private static function initCreativeItems(){
 		self::clearCreativeItems();
 
-		$creativeItems = new Config(Server::getInstance()->getFilePath() . "src/pocketmine/resources/creativeitems.json", Config::JSON, []);
-
-		foreach($creativeItems->getAll() as $data){
-			$item = Item::get($data["id"], $data["damage"], $data["count"], $data["nbt"]);
-			if($item->getName() === "Unknown"){
-				continue;
-			}
-			self::addCreativeItem($item);
-		}
+		$degerler = ["id" => 0, "meta" => 0, "count" => 1, "ench" => []];
+		foreach (CreativeItems::ITEMS as $itemdata){
+		    foreach ($degerler as $deger => $standart){
+		        if(empty($itemdata[$deger])){
+		            $itemdata[$deger] = $standart;
+                }
+            }
+            $item = Item::get($itemdata["id"], $itemdata["meta"], $itemdata["count"]);
+            if(is_array($itemdata["ench"]) && count($itemdata["ench"]) > 0){
+                foreach($itemdata["ench"] as $ench){
+                    $item->addEnchantment(Enchantment::getEnchantment($ench["id"])->setLevel($ench["lvl"]));
+                }
+            }
+            if($item->getName() === "Unknown"){
+                continue;
+            }
+            self::addCreativeItem($item);
+        }
 	}
 
 	public static function clearCreativeItems(){
