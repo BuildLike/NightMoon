@@ -39,7 +39,8 @@ class ClearInventoryCommand extends VanillaCommand {
         parent::__construct(
             $name,
             "%pocketmine.command.clearinv.description",
-            "%pocketmine.command.clearinv.usage"
+            "%pocketmine.command.clearinv.usage",
+            ["ri"]
         );
         $this->setPermission("pocketmine.command.clearinv");
 
