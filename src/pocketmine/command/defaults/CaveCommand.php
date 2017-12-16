@@ -70,17 +70,17 @@ class CaveCommand extends VanillaCommand {
 			return true;
 		}
 
-		if($args[0] == "getmypos"){
+		if(isset($args[0]) && $args[0] == "getmypos"){
 			$sender->sendMessage("Your position: ({$sender->getX()}, {$sender->getY()}, {$sender->getZ()}, {$sender->getLevel()->getFolderName()})");
 			return true;
 		}
 
-		//0:旋转角度 1:洞穴长度 2:分叉数 3:洞穴强度
+		//0:旋?角度 1:洞穴?度 2:分叉数 3:洞穴?度
 		if(count($args) > 8){
             $sender->sendMessage($sender->getServer()->getLanguage()->translateString("commands.generic.usage", [$this->usageMessage]));
 			return false;
 		}
-		//是否自动获取玩家位置
+		//是否自??取玩家位置
 		$level = isset($args[7]) ? $sender->getServer()->getLevelByName($args[7]) : $sender->getLevel();
 		if(!$level instanceof Level){
 			$sender->sendMessage(TextFormat::RED . "Wrong LevelName");
@@ -141,7 +141,7 @@ class CaveCommand extends VanillaCommand {
 		$y = $pos->y;
 		$z = $pos->z;
 		$level = $pos->getLevel();
-		$ls = $cave[1];  //长度
+		$ls = $cave[1];  //?度
 		$cv = $cave[2];  //分叉数
 		$lofs = $ls / $cave[2];
 		$ls2 = $lofs;
@@ -242,7 +242,7 @@ class CaveCommand extends VanillaCommand {
 			$l = $cave[4];
 			if ($pitch < -10 && $pitch > -45 && $level->getBlock(new Vector3($s2[0], $s2[1] - 3, $s2[2]))->getId() != 0) $this->tiankengy($level, $s2[0], $s2[1], $s2[2], $l / 2, 11, 0);
 		}*/
-		//echo "\n 矿洞生成完成\n";
+		//echo "\n ?洞生成完成\n";
 
 	}
 
@@ -253,7 +253,7 @@ class CaveCommand extends VanillaCommand {
 	 * @param       $z
 	 */
 	public function lavaSpawn(Level $level, $x, $y, $z){
-		$level->getServer()->getLogger()->info("生成岩浆中 " . "floor($x)" . ", " . "floor($y)" . ", " . floor($z));
+		$level->getServer()->getLogger()->info("生成岩?中 " . "floor($x)" . ", " . "floor($y)" . ", " . floor($z));
 		for($xx = $x - 20; $xx <= $x + 20; $xx++){
 			for($zz = $z - 20; $zz <= $z + 20; $zz++){
 				for($yy = $y; $yy > $y - 4; $yy--){
