@@ -79,7 +79,7 @@ namespace pocketmine {
 	use pocketmine\utils\Utils;
 	use pocketmine\wizard\Installer;
 
-	const VERSION = "1.0dev";
+	const VERSION = "1.0-oldAPI";
 	const API_VERSION = "3.0.0";
 	const CODENAME = "CalmGreen";
 	const NIGHTMOON_API_VERSION = "2.0.0";
