@@ -4049,6 +4049,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 			}
 
 			if ($this->inventory !== null) {
+				$this->inventory->setHeldItemIndex(0, false);
 				$this->inventory->clearAll();
 			}
 		}
@@ -4063,7 +4064,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 			$this->server->broadcast($ev->getDeathMessage(), Server::BROADCAST_CHANNEL_USERS);
 		}
 		
-		parent::kill();
+		Entity::kill();
 
 		$this->sendRespawnPacket($this->getSpawn());
 	}
